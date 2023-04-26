@@ -10,7 +10,7 @@ public class HomePage {
         int choice = MainInOut.mainMenu(loggedAs);
         if(choice==1) {
             UtilsInOut.clear();
-            OrdersInOut.newOrder();
+            OrdersPage.newOrderPage();
         }
     }
 }

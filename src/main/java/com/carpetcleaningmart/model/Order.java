@@ -58,7 +58,7 @@ public class Order extends Product {
 
     @Override
     public String toString() {
-        return "Order{" +
+        return super.toString() + "Order{" +
                 "status=" + status +
                 ", price=" + price +
                 ", customerId='" + customerId + '\'' +

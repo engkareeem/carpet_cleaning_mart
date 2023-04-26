@@ -3,7 +3,13 @@ package com.carpetcleaningmart.model;
 import java.util.Objects;
 
 public class Product {
-    public enum Category {CARPET,COVER, BLIND, CURTAIN, MATTRESS, TILE}
+    public enum Category {
+        CARPET(5),COVER(3), BLIND(2), CURTAIN(3), MATTRESS(4), TILE(6);
+        public final double price;
+        private Category(double price) {
+            this.price=price;
+        }
+    }
     private String id;
     private Category category;
     private String name;
