@@ -50,7 +50,7 @@ public class DBApi {
         order.setStatus(resultSet.getString("OrderStatus"));
         order.setCategory(resultSet.getString("OrderCategory"));
         order.setPrice(resultSet.getDouble("OrderPrice"));
-
+        order.setCustomerId(resultSet.getString("CustomerId"));
         return order;
     }
 
@@ -148,7 +148,7 @@ public class DBApi {
 
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate(String.format("insert into 'Order'(OrderName, OrderDescription, OrderCategory, OrderPrice) values('%s', '%s', '%s', %f)", order.getName(), order.getDescription(), order.getCategory(), order.getPrice()));
+            statement.executeUpdate(String.format("insert into  'Order' (OrderName, OrderDescription, OrderCategory, OrderPrice, CustomerId) values('%s', '%s', '%s', %f, '%s')", order.getName(), order.getDescription(), order.getCategory().toString(), order.getPrice(), order.getCustomerId()));
             distributeWaitingOrders();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -214,7 +214,7 @@ public class DBApi {
         try {
 
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select distinct Worker.* from Worker left join 'Order' on Worker.WorkerId = 'Order'.WorkerId where ('Order'.WorkerId is null or 'Order'.OrderStatus = 'COMPLETE') and Worker.WorkerType = 'EMPLOYEE'");
+            ResultSet resultSet = statement.executeQuery("select distinct Worker.* from Worker where Worker.WorkerId not in (select distinct 'Order'.WorkerId from 'Order' where 'Order'.OrderStatus = 'IN_TREATMENT' ) and Worker.WorkerType = 'EMPLOYEE'");
             while (resultSet.next()) {
                 freeWorkers.add(getWorkerFromRow(resultSet));
             }

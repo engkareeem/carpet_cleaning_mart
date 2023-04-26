@@ -19,7 +19,6 @@ public class MainInOut {
             System.out.println("|     2. Track your orders                                                   |");
             System.out.println("|     3. Logout                                                              |");
             System.out.println("+----------------------------------------------------------------------------+");
-            System.out.print("Enter your choice: ");
             choice = Interrupt.readChoice(3);
         } else if(Objects.equals(role, "worker")) {
             System.out.println("+----------------------------------------------------------------------------+");
@@ -28,7 +27,6 @@ public class MainInOut {
             System.out.println("|     1. View current order                                                  |");
             System.out.println("|     2. Logout                                                              |");
             System.out.println("+----------------------------------------------------------------------------+");
-            System.out.print("Enter your choice: ");
             choice = Interrupt.readChoice(2);
         }  else if(Objects.equals(role, "admin")) {
             System.out.println("+----------------------------------------------------------------------------+");
@@ -39,7 +37,6 @@ public class MainInOut {
             System.out.println("|     3. Print Report                                                        |");
             System.out.println("|     4. Logout                                                              |");
             System.out.println("+----------------------------------------------------------------------------+");
-            System.out.print("Enter your choice: ");
             choice = Interrupt.readChoice(4);
         }
         System.out.print(Colors.ANSI_RESET);

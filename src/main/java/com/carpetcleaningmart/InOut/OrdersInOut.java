@@ -25,7 +25,6 @@ public class OrdersInOut {
         System.out.println("|        2. Cover                                                            |");
         System.out.println("|        3. Mattress                                                         |");
         System.out.println("+----------------------------------------------------------------------------+");
-        System.out.print("Enter your selection: ");
         choice = Interrupt.readChoice(3);
 
         if(choice == 1) {
@@ -48,7 +47,7 @@ public class OrdersInOut {
         scanner.reset();
         String description = scanner.nextLine();
         description = String.format("%.1f*%.1f %s, %s",height,width,Utils.textToName(category.toString()),description);
-        String name = Utils.getFirstName(Auth.getCurrentUser().getName()) + "'s " +  Utils.textToName(category.toString()); // TODO: User name + category
+        String name = Utils.getFirstName(Auth.getCurrentUser().getName()) + "s " +  Utils.textToName(category.toString()); // TODO: User name + category
 
         double price = OrdersPage.calculatePrice(category,height,width);
 
