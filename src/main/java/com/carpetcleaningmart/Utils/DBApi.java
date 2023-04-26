@@ -144,16 +144,33 @@ public class DBApi {
 
     //===    Order Section    ===\
 
-    public static void addOrder(Order order, String customerId){
+    public static void addOrder(Order order){
 
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate(String.format("insert into 'Order'(OrderName, OrderDescription, OrderCategory, OrderPrice, CustomerId) values('%s', '%s', '%s', %f, '%s')", order.getName(), order.getDescription(), order.getCategory(), order.getPrice(), customerId));
+            statement.executeUpdate(String.format("insert into 'Order'(OrderName, OrderDescription, OrderCategory, OrderPrice) values('%s', '%s', '%s', %f)", order.getName(), order.getDescription(), order.getCategory(), order.getPrice()));
             distributeWaitingOrders();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+
+    public static Order getOrder(String orderId){
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet =  statement.executeQuery(String.format("select * from 'Order' where OrderId = '%s'", orderId));
+            if(resultSet.next()){
+                return getOrderFromRow(resultSet);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new Order();
+    }
+
 
     public static void updateOrder(String orderId, Order order){
         try {
@@ -219,8 +236,13 @@ public class DBApi {
     public static void finishWorkOnAnOrder(String orderId){
         try {
             Statement statement = connection.createStatement();
+            Order order = getOrder(orderId);
+            ResultSet resultSet = statement.executeQuery(String.format("select Customer.* from Customer where Customer.CustomerId in (select 'Order'.CustomerId from 'Order' where 'Order'.OrderId = '%s')", orderId));
+            resultSet.next();
+            Customer customer = getCustomerFromRow(resultSet);
             statement.executeUpdate(String.format("update 'Order' set OrderStatus = 'COMPLETE' where OrderId = '%s'", orderId));
             statement.executeUpdate(String.format("update Customer set CustomerTimesServed = CustomerTimesServed + 1 where CustomerId in (select 'Order'.CustomerId from 'Order' where 'Order'.OrderId = '%s')", orderId));
+            Notifier.sendEmail(customer, order);
         } catch (SQLException e) {
             e.printStackTrace();
         }
