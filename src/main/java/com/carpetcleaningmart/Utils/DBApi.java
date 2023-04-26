@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class DBApi {
     public static Connection connection = DBConnection.getConnection();
@@ -77,11 +78,8 @@ public class DBApi {
     public static void deleteWorker(String workerId){
         try {
             Statement statement = connection.createStatement();
-            connection.setAutoCommit(false);
             statement.executeUpdate(String.format("delete from Worker where WorkerId = '%s'", workerId));
-            statement.executeUpdate(String.format("update WorksOnOrder set Status = 'WAITING' where WorkerId = '%s' and Status = 'IN_TREATMENT'", workerId));
-            connection.commit();
-            connection.setAutoCommit(true);
+            distributeWaitingOrders();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -137,6 +135,7 @@ public class DBApi {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("insert into 'Order'(OrderName, OrderDescription, OrderCategory, OrderPrice, CustomerId) values('%s', '%s', '%s', %f, '%s')", orderName, orderDescription, orderCategory, orderPrice, customerId));
+            distributeWaitingOrders();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -146,6 +145,7 @@ public class DBApi {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("update 'Order' set OrderName = '%s', OrderDescription = '%s', OrderCategory = '%s', OrderPrice = %f, CustomerId = '%s' where OrderId = '%s'", orderName, orderDescription, orderCategory, orderPrice, customerId, orderId));
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -154,11 +154,8 @@ public class DBApi {
     public static void deleteOrder(String orderId){
         try {
             Statement statement = connection.createStatement();
-            connection.setAutoCommit(false);
             statement.executeUpdate(String.format("delete from 'Order' where OrderId = '%s'", orderId));
-            statement.executeUpdate(String.format("delete from WorksOnOrder where OrderId = '%s'", orderId));
-            connection.commit();
-            connection.setAutoCommit(true);
+            distributeWaitingOrders();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -186,7 +183,7 @@ public class DBApi {
         try {
 
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select distinct Worker.* from Worker left join 'Order' on Worker Worker.WorkerId = WorksOnOrder.WorkerId where (WorksOnOrder.WorkerId is null or WorksOnOrder.Status = 'COMPLETE') and Worker.WorkerType = 'EMPLOYEE'");
+            ResultSet resultSet = statement.executeQuery("select distinct Worker.* from Worker left join 'Order' on Worker.WorkerId = 'Order'.WorkerId where ('Order'.WorkerId is null or 'Order'.OrderStatus = 'COMPLETE') and Worker.WorkerType = 'EMPLOYEE'");
             while (resultSet.next()) {
                 freeWorkers.add(getWorkerFromRow(resultSet));
             }
@@ -209,10 +206,63 @@ public class DBApi {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("update 'Order' set OrderStatus = 'COMPLETE' where OrderId = '%s'", orderId));
+            statement.executeUpdate(String.format("update Customer set CustomerTimesServed = CustomerTimesServed + 1 where CustomerId in (select 'Order'.CustomerId from 'Order' where 'Order'.OrderId = '%s')", orderId));
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    //===    Orders Utility Section    ===\
+
+    public static ArrayList<Order> getAllOrders() {
+        ArrayList<Order> orders = new ArrayList<>();
+        try {
+
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from 'Order'");
+            while (resultSet.next()) {
+                orders.add(getOrderFromRow(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
+    public static ArrayList<Order> getWaitingOrders() {
+        ArrayList<Order> waitingOrders = new ArrayList<>();
+        try {
+
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from 'Order' where OrderStatus = 'WAITING'");
+            while (resultSet.next()) {
+                waitingOrders.add(getOrderFromRow(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return waitingOrders;
+    }
+
+
+    // distribute waiting orders on free workers
+    public static void distributeWaitingOrders(){
+        ArrayList<Order> waitingOrders = getWaitingOrders();
+        ArrayList<Worker> freeWorkers = getFreeWorkers();
+        if(freeWorkers.isEmpty()) return;
+        int index = 0;
+        Random dice = new Random();
+        for(Order order : waitingOrders){
+            index = dice.nextInt(freeWorkers.size());
+            assignWorkerToAnOrder(freeWorkers.get(index).getId(), order.getId());
+            freeWorkers.remove(index);
+        }
+    }
+
+    public static void cancelOrder(String orderId){
+        deleteOrder(orderId);
+    }
+
 
 
 

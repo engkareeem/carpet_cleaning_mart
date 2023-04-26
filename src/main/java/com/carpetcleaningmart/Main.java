@@ -22,6 +22,8 @@ public class Main {
         for(Worker worker : workers){
             System.out.println(worker);
         }
+
+        DBApi.finishWorkOnAnOrder("1");
     }
 
 }
