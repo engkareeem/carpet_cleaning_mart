@@ -1,6 +1,5 @@
 package com.carpetcleaningmart.model;
 
-import java.util.Objects;
 
 public class Customer extends User {
 
