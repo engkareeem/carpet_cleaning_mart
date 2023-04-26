@@ -56,20 +56,20 @@ public class DBApi {
 
     //===    Worker Section    ===\
 
-    public static void addWorker(Worker worker, String workerPassword){
+    public static void addWorker(String workerName, String workerPhone, String workerAddress, String workerEmail, String workerType){
 
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate(String.format("insert into Worker(WorkerName, WorkerPhone, WorkerAddress, WorkerEmail, WorkerPassword, WorkerType) values('%s', '%s', '%s', '%s', '%s', '%s')", worker.getName(), worker.getPhone(), worker.getAddress(), worker.getEmail(), workerPassword, worker.getType()));
+            statement.executeUpdate(String.format("insert into Worker(WorkerName, WorkerPhone, WorkerAddress, WorkerEmail, WorkerType) values('%s', '%s', '%s', '%s', '%s')", workerName, workerPhone, workerAddress, workerEmail, workerType));
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void updateWorker(String workerId, Worker worker){
+    public static void updateWorker(String workerId, String workerName, String workerPhone, String workerAddress, String workerEmail, String workerType){
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate(String.format("update Worker set WorkerName = '%s', WorkerPhone = '%s', WorkerAddress = '%s', WorkerType = '%s' where WorkerId = '%s'", worker.getName(), worker.getPhone(), worker.getAddress(), worker.getType(), workerId));
+            statement.executeUpdate(String.format("update Worker set WorkerName = '%s', WorkerPhone = '%s', WorkerAddress = '%s', WorkerEmail = '%s', WorkerType = '%s' where WorkerId = '%s'", workerName, workerPhone, workerAddress, workerEmail, workerType, workerId));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -87,11 +87,11 @@ public class DBApi {
 
     //===    Customer Section    ===\
 
-    public static void addCustomer(Customer customer, String customerPassword){
+    public static void addCustomer(String customerName, String customerPhone, String customerAddress, String customerEmail, String customerPassword){
 
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate(String.format("insert into Customer(CustomerName, CustomerPhone, CustomerAddress, CustomerEmail, CustomerPassword, CustomerTimesServed) values('%s', '%s', '%s', '%s', '%s', 0)", customer.getName(), customer.getPhone(), customer.getAddress(), customer.getEmail(), customerPassword));
+            statement.executeUpdate(String.format("insert into Customer(CustomerName, CustomerPhone, CustomerAddress, CustomerEmail, CustomerPassword, CustomerTimesServed) values('%s', '%s', '%s', '%s', '%s', 0)", customerName, customerPhone, customerAddress, customerEmail, customerPassword));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -111,10 +111,10 @@ public class DBApi {
         return  new Customer();
     }
 
-    public static void updateCustomer(String customerId ,Customer customer){
+    public static void updateCustomer(String customerId, String customerName, String customerPhone, String customerAddress, String customerEmail,Integer CustomerTimesServed ){
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate(String.format("update Customer set CustomerName = '%s', CustomerPhone = '%s', CustomerAddress = '%s' where CustomerId = '%s'", customer.getName(), customer.getPhone(), customer.getAddress(), customerId));
+            statement.executeUpdate(String.format("update Customer set CustomerName = '%s', CustomerPhone = '%s', CustomerAddress = '%s', CustomerEmail = '%s', CustomerTimesServed = %d where CustomerId = '%s'", customerName, customerPhone, customerAddress, customerEmail, CustomerTimesServed, customerId));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -144,21 +144,21 @@ public class DBApi {
 
     //===    Order Section    ===\
 
-    public static void addOrder(Order order, String customerId){
+    public static void addOrder(String orderName, String orderDescription, String orderCategory, Double orderPrice, String customerId){
 
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate(String.format("insert into 'Order'(OrderName, OrderDescription, OrderCategory, OrderPrice, CustomerId) values('%s', '%s', '%s', %f, '%s')", order.getName(), order.getDescription(), order.getCategory(), order.getPrice(), customerId));
+            statement.executeUpdate(String.format("insert into 'Order'(OrderName, OrderDescription, OrderCategory, OrderPrice, CustomerId) values('%s', '%s', '%s', %f, '%s')", orderName, orderDescription, orderCategory, orderPrice, customerId));
             distributeWaitingOrders();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void updateOrder(String orderId, Order order){
+    public static void updateOrder(String orderId, String orderName, String orderDescription, String orderCategory, Double orderPrice, String customerId ){
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate(String.format("update 'Order' set OrderName = '%s', OrderDescription = '%s', OrderPrice = %f where OrderId = '%s'", order.getName(), order.getDescription(), order.getPrice(), orderId));
+            statement.executeUpdate(String.format("update 'Order' set OrderName = '%s', OrderDescription = '%s', OrderCategory = '%s', OrderPrice = %f, CustomerId = '%s' where OrderId = '%s'", orderName, orderDescription, orderCategory, orderPrice, customerId, orderId));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -294,7 +294,7 @@ public class DBApi {
     }
 
     public static Customer signUp(Customer customer, String password){
-        DBApi.addCustomer(customer, password);
+        DBApi.addCustomer(customer.getName(), customer.getPhone(), customer.getAddress(), customer.getEmail(), password);
 
         try {
             Statement statement = connection.createStatement();

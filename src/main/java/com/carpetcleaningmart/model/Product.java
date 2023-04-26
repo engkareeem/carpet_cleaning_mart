@@ -3,7 +3,7 @@ package com.carpetcleaningmart.model;
 import java.util.Objects;
 
 public class Product {
-    public enum Category {CARPET, BLIND, CURTAIN, MATTRESS, TILE}
+    public enum Category {CARPET,COVER, BLIND, CURTAIN, MATTRESS, TILE}
     private String id;
     private Category category;
     private String name;
