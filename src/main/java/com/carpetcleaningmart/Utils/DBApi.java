@@ -34,8 +34,8 @@ public class DBApi {
         customer.setId(resultSet.getString("CustomerId"));
         customer.setName(resultSet.getString("CustomerName"));
         customer.setPhone(resultSet.getString("CustomerPhone"));
-        customer.setAddress(resultSet.getString("CustomerEmail"));
-        customer.setEmail(resultSet.getString("WorkerEmail"));
+        customer.setAddress(resultSet.getString("CustomerAddress"));
+        customer.setEmail(resultSet.getString("CustomerEmail"));
         customer.setTimesServed(resultSet.getInt("CustomerTimesServed"));
 
         return customer;
@@ -87,14 +87,28 @@ public class DBApi {
 
     //===    Customer Section    ===\
 
-    public static void addCustomer(String customerName, String customerPhone, String customerAddress, String customerEmail){
+    public static void addCustomer(String customerName, String customerPhone, String customerAddress, String customerEmail, String customerPassword){
 
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate(String.format("insert into Customer(CustomerName, CustomerPhone, CustomerAddress, CustomerEmail, CustomerTimesServed) values('%s', '%s', '%s', '%s', 0)", customerName, customerPhone, customerAddress, customerEmail));
+            statement.executeUpdate(String.format("insert into Customer(CustomerName, CustomerPhone, CustomerAddress, CustomerEmail, CustomerPassword, CustomerTimesServed) values('%s', '%s', '%s', '%s', '%s', 0)", customerName, customerPhone, customerAddress, customerEmail, customerPassword));
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Customer getCustomer(String customerId){
+        try {
+
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(String.format("select * from Customer where CustomerId = '%s'", customerId));
+            if(resultSet.next()){
+                return getCustomerFromRow(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return  new Customer();
     }
 
     public static void updateCustomer(String customerId, String customerName, String customerPhone, String customerAddress, String customerEmail,Integer CustomerTimesServed ){
@@ -261,6 +275,76 @@ public class DBApi {
 
     public static void cancelOrder(String orderId){
         deleteOrder(orderId);
+    }
+
+
+    //===    Auth Utility Section    ===\
+
+    public static Boolean isWorker(String email){
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(String.format("select * from Worker where WorkerEmail = '%s'", email));
+            if(resultSet.next()) {
+                return true;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static Customer signUp(Customer customer, String password){
+        DBApi.addCustomer(customer.getName(), customer.getPhone(), customer.getAddress(), customer.getEmail(), password);
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select seq from sqlite_sequence where name = 'Customer'");
+            return getCustomer(resultSet.getString("seq"));
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return new Customer();
+    }
+
+
+    public static Worker logInAsWorker(String email, String password){
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(String.format("select * from Worker where WorkerEmail = '%s'", email));
+            if(resultSet.next()) {
+                if(resultSet.getString("WorkerPassword").equals(password)){
+                    return getWorkerFromRow(resultSet);
+                }else{
+                    System.out.println("ERROR: Wrong password entered, Please try again.");
+                }
+            }else{
+                System.out.println("ERROR: User was not found, Please check your email.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new Worker();
+    }
+
+    public static Customer loginAsCustomer(String email, String password){
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(String.format("select * from Customer where CustomerEmail = '%s'", email));
+            if(resultSet.next()) {
+                if(resultSet.getString("CustomerPassword").equals(password)){
+                    return getCustomerFromRow(resultSet);
+                }else{
+                    System.out.println("ERROR: Wrong password entered, Please try again.");
+                }
+            }else{
+                System.out.println("ERROR: User was not found, Please check your email.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new Customer();
     }
 
 
