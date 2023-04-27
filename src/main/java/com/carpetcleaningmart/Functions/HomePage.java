@@ -1,16 +1,31 @@
 package com.carpetcleaningmart.Functions;
 
-import com.carpetcleaningmart.InOut.MainInOut;
-import com.carpetcleaningmart.InOut.OrdersInOut;
-import com.carpetcleaningmart.InOut.UtilsInOut;
+import com.carpetcleaningmart.InOut.*;
+import com.carpetcleaningmart.Utils.Auth;
+import com.carpetcleaningmart.Utils.Interrupt;
+
 
 public class HomePage {
-    static String loggedAs = "customer";
+
     public static void homePage() {
-        int choice = MainInOut.mainMenu(loggedAs);
-        if(choice==1) {
-            UtilsInOut.clear();
-            OrdersPage.newOrderPage();
-        }
+        do {
+            if (!Auth.isLoggedIn()) {
+                AuthInOut.authorizeUser();
+                if(!Auth.isLoggedIn()) {
+                    Interrupt.printError("An error occurred, please try again after few moments..");
+                    System.exit(0);
+                }
+                Interrupt.printSuccess("Welcome " + Auth.getCurrentUser().getName());
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (Auth.isLoggedIn()) {
+                MainInOut.mainMenu();
+            }
+        } while (true);
+
     }
 }

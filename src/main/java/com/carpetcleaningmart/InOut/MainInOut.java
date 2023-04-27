@@ -1,17 +1,17 @@
 package com.carpetcleaningmart.InOut;
 
+import com.carpetcleaningmart.Utils.Auth;
 import com.carpetcleaningmart.Utils.Colors;
 import com.carpetcleaningmart.Utils.Interrupt;
-
-import java.util.Objects;
-import java.util.Scanner;
+import com.carpetcleaningmart.model.Worker;
 
 public class MainInOut {
-    public static int mainMenu(String role) {
-        Scanner scanner = new Scanner(System.in);
-        int choice = -1;
+    public static void mainMenu() {
+
+        UtilsInOut.clear();
+        int choice;
         System.out.print(Colors.ANSI_DEFAULT);
-        if(Objects.equals(role, "customer")) {
+        if (!Auth.getIsWorker()) {
             System.out.println("+----------------------------------------------------------------------------+");
             System.out.println("|                                 Main Menu                                  |");
             System.out.println("+----------------------------------------------------------------------------+");
@@ -20,7 +20,15 @@ public class MainInOut {
             System.out.println("|     3. Logout                                                              |");
             System.out.println("+----------------------------------------------------------------------------+");
             choice = Interrupt.readChoice(3);
-        } else if(Objects.equals(role, "worker")) {
+            if (choice == 1) {
+                UtilsInOut.clear();
+                OrdersInOut.createNewOrder();
+            } else if (choice == 2) {
+                OrdersInOut.displayOrders();
+            } else {
+                Auth.logout();
+            }
+        } else if (Auth.getRole() == Worker.WorkerType.EMPLOYEE) {
             System.out.println("+----------------------------------------------------------------------------+");
             System.out.println("|                                 Main Menu                                  |");
             System.out.println("+----------------------------------------------------------------------------+");
@@ -28,7 +36,12 @@ public class MainInOut {
             System.out.println("|     2. Logout                                                              |");
             System.out.println("+----------------------------------------------------------------------------+");
             choice = Interrupt.readChoice(2);
-        }  else if(Objects.equals(role, "admin")) {
+            if(choice == 1) {
+                OrdersInOut.displayCurrentOrder();
+            } else {
+                Auth.logout();
+            }
+        } else if (Auth.getRole() == Worker.WorkerType.ADMIN) {
             System.out.println("+----------------------------------------------------------------------------+");
             System.out.println("|                                 Main Menu                                  |");
             System.out.println("+----------------------------------------------------------------------------+");
@@ -40,6 +53,5 @@ public class MainInOut {
             choice = Interrupt.readChoice(4);
         }
         System.out.print(Colors.ANSI_RESET);
-        return choice;
     }
 }
