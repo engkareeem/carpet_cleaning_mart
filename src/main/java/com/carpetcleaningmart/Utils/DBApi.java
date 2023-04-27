@@ -133,11 +133,19 @@ public class DBApi {
     public static void deleteCustomer(String customerId){
         try {
             Statement statement = connection.createStatement();
-            connection.setAutoCommit(false);
             statement.executeUpdate(String.format("delete from Customer where CustomerId = '%s'", customerId));
-            statement.executeUpdate(String.format("delete from WorksOnOrder where CustomerId = '%s'", customerId));
-            connection.commit();
-            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteTestCustomer(){
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from Customer where CustomerEmail = 'customer@gmail.com'");
+            resultSet.next();
+            String customerId = resultSet.getString("CustomerId");
+            statement.executeUpdate(String.format("delete from Customer where CustomerId = '%s'", customerId));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -347,7 +355,25 @@ public class DBApi {
         return false;
     }
 
+    private static boolean checkIfEmailUsed(String email){
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(String.format("select * from Customer where CustomerEmail = '%s'", email));
+            if (resultSet.next()) {
+                return true;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static Customer signUp(Customer customer, String password){
+        if (checkIfEmailUsed(customer.getEmail())) {
+            Interrupt.printError("Email is already in use.");
+            return new Customer();
+        }
+
         DBApi.addCustomer(customer, password);
 
         try {
