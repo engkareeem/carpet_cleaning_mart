@@ -4,6 +4,7 @@ import com.carpetcleaningmart.model.Customer;
 import com.carpetcleaningmart.model.Order;
 import com.carpetcleaningmart.model.Worker;
 
+import java.security.PublicKey;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -255,13 +256,17 @@ public class DBApi {
             statement.executeUpdate(String.format("update 'Order' set OrderStatus = 'COMPLETE' where OrderId = '%s'", orderId));
             statement.executeUpdate(String.format("update Customer set CustomerTimesServed = CustomerTimesServed + 1 where CustomerId in (select 'Order'.CustomerId from 'Order' where 'Order'.OrderId = '%s')", orderId));
             distributeWaitingOrders();
-//            Notifier.sendEmail(customer, order);
+            Notifier.sendEmail(customer, order);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     //===    Orders Utility Section    ===\
+
+
+
+
 
     public static ArrayList<Order> getAllOrders() {
         ArrayList<Order> orders = new ArrayList<>();
