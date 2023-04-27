@@ -19,14 +19,12 @@ public class OrdersInOut {
         int choice;
 
         System.out.print(Colors.ANSI_DEFAULT);
-        System.out.println("+----------------------------------------------------------------------------+");
-        System.out.println("|                                 New Order                                  |");
-        System.out.println("+----------------------------------------------------------------------------+");
-        System.out.println("|     Select product category                                                |");
-        System.out.println("|        1. Carpet                                                           |");
-        System.out.println("|        2. Cover                                                            |");
-        System.out.println("|        3. Mattress                                                         |");
-        System.out.println("+----------------------------------------------------------------------------+");
+        UtilsInOut.printHeader("New Order");
+        UtilsInOut.printContentRow("Select product category");
+        UtilsInOut.printContentRow(" 1. Carpet");
+        UtilsInOut.printContentRow(" 2. Cover");
+        UtilsInOut.printContentRow(" 3. Mattress");
+        UtilsInOut.printSeparator();
         choice = Interrupt.readChoice(3);
 
         if (choice == 1) {
@@ -37,14 +35,14 @@ public class OrdersInOut {
             category = Product.Category.MATTRESS;
         }
 
-        System.out.println("+----------------------------------------------------------------------------+");
-        System.out.println("|      Please enter product dimensions.                                      |");
+        UtilsInOut.printSeparator();
+        UtilsInOut.printContentRow("Please enter product dimensions.");
         double height = Interrupt.readNumber("|        Height: ");
         double width = Interrupt.readNumber("|        width: ");
 
-        System.out.println("+----------------------------------------------------------------------------+");
-        System.out.println("|      Please describe the product.                                          |");
-        System.out.println("+----------------------------------------------------------------------------+");
+        UtilsInOut.printSeparator();
+        UtilsInOut.printContentRow("Please describe the product.");
+        UtilsInOut.printSeparator();
         System.out.print("Enter the description: ");
         scanner.reset();
         String description = scanner.nextLine();
@@ -67,20 +65,18 @@ public class OrdersInOut {
             UtilsInOut.clear();
             ArrayList<Order> orders = DBApi.getCustomerOrder(Auth.getCurrentUser().getId()); // 76
             System.out.print(Colors.ANSI_DEFAULT);
-            System.out.println("+----------------------------------------------------------------------------+");
-            System.out.println("|                                Your Orders                                 |");
-            System.out.println("+----------------------------------------------------------------------------+");
+            UtilsInOut.printHeader("Your Orders");
 
             int i = 1;
             for (Order order : orders) {
-                Interrupt.printContentRow(i++ + ". " + order.getCategory() + " - " + order.getDescription());
+                UtilsInOut.printContentRow(i++ + ". " + order.getCategory() + " - " + order.getDescription());
             }
             if (orders.isEmpty()) {
-                Interrupt.printContentRow("You does not have any order..");
+                UtilsInOut.printContentRow("You does not have any order..");
             }
-            Interrupt.printContentRow(i + ". " + "Return");
+            UtilsInOut.printContentRow(i + ". " + "Return");
 
-            System.out.println("+----------------------------------------------------------------------------+");
+            UtilsInOut.printSeparator();
 
             int choice = Interrupt.readChoice(i, "Choose order to view: ");
             if (choice != i) {
@@ -97,16 +93,14 @@ public class OrdersInOut {
     public static void displayOrder(Order order) {
         UtilsInOut.clear();
         String title = "Your " + order.getCategory().toString();
-        System.out.println("+----------------------------------------------------------------------------+");
-        System.out.printf("|%38s%-38s|\n", title.substring(0, title.length() / 2), title.substring(title.length() / 2 + 1));
-        System.out.println("+----------------------------------------------------------------------------+");
-        Interrupt.printContentRow("Order name: " + order.getName());
-        Interrupt.printContentRow("Order status: " + order.getStatus());
-        Interrupt.printContentRow("Order description: " + order.getDescription());
-        Interrupt.printContentRow("Total price: " + order.getPrice());
-        Interrupt.printContentRow(" 1. Cancel order", Colors.ANSI_GREEN);
-        Interrupt.printContentRow(" 2. Return", Colors.ANSI_GREEN);
-        System.out.println("+----------------------------------------------------------------------------+");
+        UtilsInOut.printHeader(title);
+        UtilsInOut.printContentRow("Order name: " + order.getName());
+        UtilsInOut.printContentRow("Order status: " + order.getStatus());
+        UtilsInOut.printContentRow("Order description: " + order.getDescription());
+        UtilsInOut.printContentRow("Total price: " + order.getPrice());
+        UtilsInOut.printContentRow(" 1. Cancel order", Colors.ANSI_GREEN);
+        UtilsInOut.printContentRow(" 2. Return", Colors.ANSI_GREEN);
+        UtilsInOut.printSeparator();
         int choice = Interrupt.readChoice(2);
         if (choice == 1) {
             DBApi.cancelOrder(order.getId());
@@ -118,21 +112,19 @@ public class OrdersInOut {
     public static void displayCurrentOrder() {
         Order order = DBApi.getWorkerCurrentOrder(Auth.getCurrentUser().getId());
 
-        System.out.println("+----------------------------------------------------------------------------+");
-        System.out.println("|                             Your current order                             |");
-        System.out.println("+----------------------------------------------------------------------------+");
+        UtilsInOut.printHeader("Your current order");
         if (order == null) {
-            Interrupt.printContentRow("You dont have order to work at.");
-            Interrupt.printContentRow("1. Return");
-            System.out.println("+----------------------------------------------------------------------------+");
+            UtilsInOut.printContentRow("You dont have order to work at.");
+            UtilsInOut.printContentRow("1. Return");
+            UtilsInOut.printSeparator();
             Interrupt.readChoice(1);
         } else {
-            Interrupt.printContentRow("Order name: " + order.getName());
-            Interrupt.printContentRow("Order description: " + order.getDescription());
-            Interrupt.printContentRow("Total price: " + order.getPrice());
-            Interrupt.printContentRow(" 1. Finish order", Colors.ANSI_GREEN);
-            Interrupt.printContentRow(" 2. Return", Colors.ANSI_GREEN);
-            System.out.println("+----------------------------------------------------------------------------+");
+            UtilsInOut.printContentRow("Order name: " + order.getName());
+            UtilsInOut.printContentRow("Order description: " + order.getDescription());
+            UtilsInOut.printContentRow("Total price: " + order.getPrice());
+            UtilsInOut.printContentRow(" 1. Finish order", Colors.ANSI_GREEN);
+            UtilsInOut.printContentRow(" 2. Return", Colors.ANSI_GREEN);
+            UtilsInOut.printSeparator();
             int choice = Interrupt.readChoice(2);
             if (choice == 1) {
                 DBApi.finishWorkOnAnOrder(order.getId());

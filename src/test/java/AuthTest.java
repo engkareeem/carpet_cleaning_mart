@@ -46,7 +46,7 @@ public class AuthTest {
     public void testLogIn() {
         Auth.logIn("customer@gmail.com", "123123");
         user = Auth.getCurrentUser();
-        assertNotNull(user);
+        assertNotNull(Auth.getCurrentUser());
         assertFalse(Auth.getIsWorker());
         assertNull(Auth.getRole());
     }

@@ -94,13 +94,4 @@ public class Interrupt {
 
     }
 
-    //=== Menu printer section ===\\
-    public static void printContentRow(String content) {
-        printContentRow(content, Colors.ANSI_DEFAULT);
-    }
-
-    public static void printContentRow(String content, String color) {
-        System.out.printf("|      " + color + "%-70s" + Colors.ANSI_DEFAULT + "|\n", content);
-
-    }
 }
