@@ -1,13 +1,17 @@
 package com.carpetcleaningmart.Utils;
 
+import com.carpetcleaningmart.model.Customer;
+import com.carpetcleaningmart.model.Order;
+
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 public class Notifier {
-    public static void sendEmail(){
+    private static Session session;
+    public static void sendEmail(Customer customer, Order finishedOrder){
 
-        final String username = "carpet.cleaner.mart@gmail.com";
-        final String password = "V1MOH&!!dul&6#nl";
+        final String senderEmail = "carpet.cleaner.mart@gmail.com";
+        final String token = "dhuyhelouamynwbs";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -16,26 +20,38 @@ public class Notifier {
         props.put("mail.smtp.port", "587");
 
 //        System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
-        Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
-                    }
-                });
+        if(session == null)
+            session = Session.getInstance(props,
+                    new javax.mail.Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(senderEmail, token);
+                        }
+                    });
 
         try {
 
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username));
+            message.setFrom(new InternetAddress(senderEmail));
             message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse("shaer.nasrallah@gmail.com"));
-            message.setSubject("Your Order#123 is Ready");
-            message.setText("Dear Mail Crawler,"
-                    + "\n\n No spam to my email, please!");
+                    InternetAddress.parse(customer.getEmail()));
+            message.setSubject(String.format("Your %s is now Ready!", finishedOrder.getCategory().toString().toLowerCase()));
+            message.setText(
+                    String.format("""
+                                    Dear %s,
+                                                        
+                                    We are pleased to inform you that your %s  is now ready and available to be taken!
+                                                      
+                                    You'll be pleased to know that your %s is priced at %.2f$,
+                                     which we believe is a great value for the quality we offer.
+                                                        
+                                    Thank you for choosing us. We hope to serve you again soon.
+                                                        
+                                    Best regards,
+                                    Carpet Cleaning Mart.        \s
+                            """, customer.getName(), finishedOrder.getCategory().toString().toLowerCase(), finishedOrder.getDescription(), finishedOrder.getPrice()));
 
             Transport.send(message);
 
-            System.out.println("Done");
 
         } catch (MessagingException e) {
             e.printStackTrace();

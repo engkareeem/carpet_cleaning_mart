@@ -256,7 +256,7 @@ public class DBApi {
             statement.executeUpdate(String.format("update 'Order' set OrderStatus = 'COMPLETE' where OrderId = '%s'", orderId));
             statement.executeUpdate(String.format("update Customer set CustomerTimesServed = CustomerTimesServed + 1 where CustomerId in (select 'Order'.CustomerId from 'Order' where 'Order'.OrderId = '%s')", orderId));
             distributeWaitingOrders();
-//            Notifier.sendEmail(customer, order);
+            Notifier.sendEmail(customer, order);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -264,33 +264,9 @@ public class DBApi {
 
     //===    Orders Utility Section    ===\
 
-    public static Order getWorkerCurrentOrder(String workerId) {
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(String.format("select * from 'Order' where WorkerId = '%s' and OrderStatus = 'IN_TREATMENT'", workerId));
-            if (resultSet.next()){
-                return getOrderFromRow(resultSet);
-            }
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
-    public static ArrayList<Order> getCustomerOrder(String customerId) {
-        ArrayList<Order> orders = new ArrayList<>();
-        try {
 
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(String.format("select * from 'Order' where CustomerId = '%s'", customerId));
-            while (resultSet.next()) {
-                orders.add(getOrderFromRow(resultSet));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return orders;
-    }
+
 
     public static ArrayList<Order> getAllOrders() {
         ArrayList<Order> orders = new ArrayList<>();
