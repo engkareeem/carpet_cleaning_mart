@@ -194,6 +194,18 @@ public class DBApi {
 
 
     //===    Workers Utility Section    ===\
+    public static Order getWorkerCurrentOrder(String workerId) {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(String.format("select * from 'Order' where WorkerId = '%s' and OrderStatus = 'IN_TREATMENT'", workerId));
+            if (resultSet.next()){
+                return getOrderFromRow(resultSet);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public static ArrayList<Worker> getAllWorkers() {
         ArrayList<Worker> workers = new ArrayList<>();
         try {
@@ -242,6 +254,7 @@ public class DBApi {
             Customer customer = getCustomerFromRow(resultSet);
             statement.executeUpdate(String.format("update 'Order' set OrderStatus = 'COMPLETE' where OrderId = '%s'", orderId));
             statement.executeUpdate(String.format("update Customer set CustomerTimesServed = CustomerTimesServed + 1 where CustomerId in (select 'Order'.CustomerId from 'Order' where 'Order'.OrderId = '%s')", orderId));
+            distributeWaitingOrders();
 //            Notifier.sendEmail(customer, order);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -265,6 +278,20 @@ public class DBApi {
         return orders;
     }
 
+    public static ArrayList<Order> getCustomerOrder(String customerId) {
+        ArrayList<Order> orders = new ArrayList<>();
+        try {
+
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(String.format("select * from 'Order' where CustomerId = '%s'", customerId));
+            while (resultSet.next()) {
+                orders.add(getOrderFromRow(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
     public static ArrayList<Order> getWaitingOrders() {
         ArrayList<Order> waitingOrders = new ArrayList<>();
         try {
@@ -339,10 +366,10 @@ public class DBApi {
                 if(resultSet.getString("WorkerPassword").equals(password)){
                     return getWorkerFromRow(resultSet);
                 }else{
-                    System.out.println("ERROR: Wrong password entered, Please try again.");
+                    Interrupt.printError("Wrong password entered, Please try again.");
                 }
             }else{
-                System.out.println("ERROR: User was not found, Please check your email.");
+                Interrupt.printError("User was not found, Please check your email.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -358,10 +385,10 @@ public class DBApi {
                 if(resultSet.getString("CustomerPassword").equals(password)){
                     return getCustomerFromRow(resultSet);
                 }else{
-                    System.out.println("ERROR: Wrong password entered, Please try again.");
+                    Interrupt.printError("Wrong password entered, Please try again.");
                 }
             }else{
-                System.out.println("ERROR: User was not found, Please check your email.");
+                Interrupt.printError("User was not found, Please check your email.");
             }
         } catch (SQLException e) {
             e.printStackTrace();

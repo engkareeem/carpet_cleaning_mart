@@ -25,9 +25,7 @@ public class DBConnection {
             DriverManager.registerDriver(driver);
 
             connection = DriverManager.getConnection("jdbc:sqlite:cleaning_carpet_mart.sqlite");
-            System.out.println("Connection successful!");
         } catch ( Exception exception ) {
-            System.out.println("Connection failed");
             System.err.println( exception.getClass().getName() + ": " + exception.getMessage() );
             System.exit(0);
         }

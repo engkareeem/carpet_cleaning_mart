@@ -1,11 +1,10 @@
 package com.carpetcleaningmart.Utils;
-
 import com.carpetcleaningmart.model.Customer;
 import com.carpetcleaningmart.model.User;
 import com.carpetcleaningmart.model.Worker;
 
 public class Auth {
-    private static User currentUser;
+    private static User currentUser = null;
     private static Boolean isWorker;
 
     private static Worker.WorkerType role;
@@ -61,7 +60,7 @@ public class Auth {
     }
 
     public static boolean isLoggedIn(){
-        return currentUser == null;
+        return currentUser != null;
     }
 
 
