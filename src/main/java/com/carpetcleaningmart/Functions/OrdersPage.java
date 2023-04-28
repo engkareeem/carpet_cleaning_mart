@@ -1,9 +1,7 @@
 package com.carpetcleaningmart.Functions;
 
 import com.carpetcleaningmart.Utils.Auth;
-import com.carpetcleaningmart.Utils.DBApi;
 import com.carpetcleaningmart.model.Customer;
-import com.carpetcleaningmart.model.Order;
 import com.carpetcleaningmart.model.Product;
 
 public class OrdersPage {
@@ -12,9 +10,8 @@ public class OrdersPage {
         return size * category.price;
     }
 
-    public static double getDiscount(Order order) {
-        int timeServed = DBApi.getCustomer(order.getCustomerId()).getTimesServed();
-        double price = order.getPrice();
+    public static double getDiscount(double price) {
+        int timeServed = ((Customer) Auth.getCurrentUser()).getTimesServed();
         double discount = 0;
         if (timeServed > 10) {
             if (price > 600) discount = price * 0.08;
