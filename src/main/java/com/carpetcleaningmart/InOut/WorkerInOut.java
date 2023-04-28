@@ -17,7 +17,7 @@ public class WorkerInOut {
 
         UtilsInOut.printHeader("Mart Statistics");
         UtilsInOut.printContentRow("Workers serving customers: " + workersNum);
-        UtilsInOut.printContentRow("Customers served: " + customersNum);
+        UtilsInOut.printContentRow("Orders served: " + customersNum);
         UtilsInOut.printContentRow("Waiting orders: " + waitedOrders);
         UtilsInOut.printContentRow("In Treatment orders: " + inTreatmentOrders);
         UtilsInOut.printContentRow("Completed orders: " + completedOrders);
