@@ -52,7 +52,7 @@ public class Interrupt {
     //=== Auth reader section ===\\
     public static String readEmail() {
         Scanner scanner = new Scanner(System.in);
-        String message = "Enter your email: ";
+        String message = "Enter email: ";
         System.out.print(message);
         String regex = "^[\\w!#$%&amp;'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&amp;'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
         Pattern pattern = Pattern.compile(regex);
@@ -62,18 +62,18 @@ public class Interrupt {
             System.out.print(message);
             email = scanner.next();
         }
-        return email;
+        return email.toLowerCase();
     }
 
     public static String readPassword() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your password: ");
+        System.out.print("Enter password: ");
         return scanner.next();
     }
 
     public static String readPhoneNumber() {
         Scanner scanner = new Scanner(System.in);
-        String message = "Enter your phone number: ";
+        String message = "Enter phone number: ";
         System.out.print(message);
         String phone = scanner.next();
         while (!Utils.isNum(phone)) {

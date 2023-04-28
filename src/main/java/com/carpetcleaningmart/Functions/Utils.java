@@ -2,9 +2,15 @@ package com.carpetcleaningmart.Functions;
 
 public class Utils {
     public static String textToName(String text) {
-        String name = text;
-        if (name.length() > 1) name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
-        return name;
+        if(text.length() <= 1) return text;
+        String[] slices = text.split(" ");
+        StringBuilder name = new StringBuilder();
+        for(String slice: slices) {
+            if (slice.length() > 1) slice = slice.substring(0, 1).toUpperCase() + slice.substring(1).toLowerCase();
+            name.append(slice);
+            name.append(" ");
+        }
+        return name.toString();
     }
 
     public static String getFirstName(String name) {

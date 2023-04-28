@@ -69,7 +69,7 @@ public class OrdersInOut {
 
             int i = 1;
             for (Order order : orders) {
-                UtilsInOut.printContentRow(i++ + ". " + order.getCategory() + " - " + order.getDescription());
+                UtilsInOut.printContentRow(i++ + ". " + order.getCategory() + " - " + order.getDescription() + " - " + Utils.textToName(order.getStatus().toString().replace("_"," ")));
             }
             if (orders.isEmpty()) {
                 UtilsInOut.printContentRow("You does not have any order..");
@@ -95,7 +95,7 @@ public class OrdersInOut {
         String title = "Your " + order.getCategory().toString();
         UtilsInOut.printHeader(title);
         UtilsInOut.printContentRow("Order name: " + order.getName());
-        UtilsInOut.printContentRow("Order status: " + order.getStatus());
+        UtilsInOut.printContentRow("Order status: " + Utils.textToName(order.getStatus().toString().replace("_"," ")));
         UtilsInOut.printContentRow("Order description: " + order.getDescription());
         UtilsInOut.printContentRow("Total price: " + order.getPrice());
         UtilsInOut.printContentRow(" 1. Cancel order", Colors.ANSI_GREEN);
