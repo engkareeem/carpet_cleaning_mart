@@ -8,13 +8,11 @@ public class AuthInOut {
     public static void authorizeUser() {
         UtilsInOut.clear();
         System.out.println(Colors.ANSI_DEFAULT);
-        System.out.println("+----------------------------------------------------------------------------+");
-        System.out.println("|                               Authentication                               |");
-        System.out.println("+----------------------------------------------------------------------------+");
-        Interrupt.printContentRow("1. Login");
-        Interrupt.printContentRow("2. Register new account");
-        Interrupt.printContentRow("3. Exit");
-        System.out.println("+----------------------------------------------------------------------------+");
+        UtilsInOut.printHeader("Authentication");
+        UtilsInOut.printContentRow("1. Login");
+        UtilsInOut.printContentRow("2. Register new account");
+        UtilsInOut.printContentRow("3. Exit");
+        UtilsInOut.printSeparator();
 
         int choice = Interrupt.readChoice(3);
         if (choice == 1) {
