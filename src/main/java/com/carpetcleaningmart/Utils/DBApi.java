@@ -201,6 +201,23 @@ public class DBApi {
         }
     }
 
+    //===    Customer Utility Section    ===\
+
+    public static Integer getCustomersServedCount(){
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select sum(CustomerTimesServed) from Customer");
+            if(resultSet.next()){
+                return resultSet.getInt(1);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+
 
     //===    Workers Utility Section    ===\
     public static Order getWorkerCurrentOrder(String workerId) {
@@ -228,6 +245,17 @@ public class DBApi {
             e.printStackTrace();
         }
         return workers;
+    }
+
+    public static Integer getWorkersCount() {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select count(*) from Worker where WorkerType = 'EMPLOYEE'");
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public static ArrayList<Worker> searchForWorkers(String workerName) {
@@ -288,6 +316,16 @@ public class DBApi {
     //===    Orders Utility Section    ===\
 
 
+    public static Integer getOrderStatusCount(Order.Status orderStatus) {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(String.format("select count(*) from 'Order' where OrderStatus = '%s'", orderStatus.toString().toUpperCase()));
+            return resultSet.getInt(1);
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
 
 
