@@ -1,5 +1,6 @@
 package com.carpetcleaningmart.Utils;
 
+import com.carpetcleaningmart.Functions.OrdersPage;
 import com.carpetcleaningmart.model.Customer;
 import com.carpetcleaningmart.model.Order;
 
@@ -29,6 +30,10 @@ public class Notifier {
                     });
 
         try {
+            finishedOrder.setCustomerId(customer.getId());
+            double discount = OrdersPage.getDiscount(finishedOrder);
+            double totalPrice = finishedOrder.getPrice() - discount * finishedOrder.getPrice();
+            String discountMsg = String.format("\"You've received a discount! The new price is %.2f$.\";", totalPrice);
 
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(senderEmail));
@@ -42,13 +47,14 @@ public class Notifier {
                                     We are pleased to inform you that your %s  is now ready and available to be taken!
                                                       
                                     You'll be pleased to know that your %s is priced at %.2f$,
+                                    %s
                                      which we believe is a great value for the quality we offer.
                                                         
                                     Thank you for choosing us. We hope to serve you again soon.
                                                         
                                     Best regards,
                                     Carpet Cleaning Mart.        \s
-                            """, customer.getName(), finishedOrder.getCategory().toString().toLowerCase(), finishedOrder.getDescription(), finishedOrder.getPrice()));
+                            """, customer.getName(), finishedOrder.getCategory().toString().toLowerCase(), finishedOrder.getDescription(), finishedOrder.getPrice(), discount > 0 ? discountMsg : ""));
 
             Transport.send(message);
 
