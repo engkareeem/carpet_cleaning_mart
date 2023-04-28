@@ -2,7 +2,10 @@ package com.carpetcleaningmart.InOut;
 
 import com.carpetcleaningmart.Utils.Auth;
 import com.carpetcleaningmart.Utils.Colors;
+import com.carpetcleaningmart.Utils.DBApi;
 import com.carpetcleaningmart.Utils.Interrupt;
+import com.carpetcleaningmart.model.Customer;
+import com.carpetcleaningmart.model.Worker;
 
 public class AuthInOut {
     public static void authorizeUser() {
@@ -24,6 +27,10 @@ public class AuthInOut {
         } else if(choice == 2) {
             String name = Interrupt.readString("Enter your name: ");
             String email = Interrupt.readEmail();
+            while(DBApi.checkIfEmailUsed(email)) {
+                Interrupt.printError("Email is already in use.");
+                email = Interrupt.readEmail();
+            }
             String phone = Interrupt.readPhoneNumber();
             String address = Interrupt.readString("Enter your address: ");
             String password = Interrupt.readPassword();
@@ -31,6 +38,20 @@ public class AuthInOut {
         } else {
             System.exit(0);
         }
+    }
+    public static Worker hireWorker() {
+        String name = Interrupt.readString("Enter worker name: ");
+        String email = Interrupt.readEmail();
+        while(DBApi.checkIfEmailUsed(email)) {
+            Interrupt.printError("Email is already in use.");
+            email = Interrupt.readEmail();
+        }
+        String phone = Interrupt.readPhoneNumber();
+        String address = Interrupt.readString("Enter worker address: ");
+        String password = Interrupt.readPassword();
+        Worker worker = new Worker(null,name,phone,address,email, Worker.WorkerType.EMPLOYEE,null);
+        DBApi.addWorker(worker,password);
+        return worker;
     }
 
 }

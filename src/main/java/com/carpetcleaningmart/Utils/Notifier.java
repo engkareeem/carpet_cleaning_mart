@@ -11,7 +11,7 @@ public class Notifier {
     public static void sendEmail(Customer customer, Order finishedOrder){
 
         final String senderEmail = "carpet.cleaner.mart@gmail.com";
-        final String token = "dhuyhelouamynwbs";
+        final String token = "hverxjkkrcdvvahu";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

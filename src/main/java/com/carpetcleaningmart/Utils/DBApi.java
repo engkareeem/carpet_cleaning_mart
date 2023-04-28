@@ -62,6 +62,7 @@ public class DBApi {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("insert into Worker(WorkerName, WorkerPhone, WorkerAddress, WorkerEmail, WorkerPassword, WorkerType) values('%s', '%s', '%s', '%s', '%s', '%s')", worker.getName(), worker.getPhone(), worker.getAddress(), worker.getEmail(), workerPassword, worker.getType()));
+            distributeWaitingOrders();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -307,7 +308,7 @@ public class DBApi {
             statement.executeUpdate(String.format("update 'Order' set OrderStatus = 'COMPLETE' where OrderId = '%s'", orderId));
             statement.executeUpdate(String.format("update Customer set CustomerTimesServed = CustomerTimesServed + 1 where CustomerId in (select 'Order'.CustomerId from 'Order' where 'Order'.OrderId = '%s')", orderId));
             distributeWaitingOrders();
-            Notifier.sendEmail(customer, order);
+//            Notifier.sendEmail(customer, order);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -408,7 +409,7 @@ public class DBApi {
         return false;
     }
 
-    private static boolean checkIfEmailUsed(String email){
+    public static boolean checkIfEmailUsed(String email){
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(String.format("select * from Customer where CustomerEmail = '%s'", email));
@@ -422,11 +423,6 @@ public class DBApi {
     }
 
     public static Customer signUp(Customer customer, String password){
-        if (checkIfEmailUsed(customer.getEmail())) {
-            Interrupt.printError("Email is already in use.");
-            return new Customer();
-        }
-
         DBApi.addCustomer(customer, password);
 
         try {
@@ -440,6 +436,7 @@ public class DBApi {
 
         return new Customer();
     }
+
 
 
     public static Worker logInAsWorker(String email, String password){

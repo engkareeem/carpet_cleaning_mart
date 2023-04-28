@@ -2,6 +2,7 @@ package com.carpetcleaningmart.InOut;
 
 import com.carpetcleaningmart.Utils.Auth;
 import com.carpetcleaningmart.Utils.Colors;
+import com.carpetcleaningmart.Utils.DBApi;
 import com.carpetcleaningmart.Utils.Interrupt;
 import com.carpetcleaningmart.model.Worker;
 
@@ -40,11 +41,21 @@ public class MainInOut {
         } else if (Auth.getRole() == Worker.WorkerType.ADMIN) {
             UtilsInOut.printHeader("Main Menu");
             UtilsInOut.printContentRow("1. Hire Worker");
-            UtilsInOut.printContentRow("2. Statistics");
-            UtilsInOut.printContentRow("3. Print Report");
-            UtilsInOut.printContentRow("4. Logout");
+            UtilsInOut.printContentRow("2. Fire Worker");
+            UtilsInOut.printContentRow("3. Statistics");
+            UtilsInOut.printContentRow("4. Print Report");
+            UtilsInOut.printContentRow("5. Logout");
             UtilsInOut.printSeparator();
-            choice = Interrupt.readChoice(4);
+            choice = Interrupt.readChoice(5);
+            if(choice == 1) {
+                WorkerInOut.hireWorker();
+            } else if(choice == 2) {
+                WorkerInOut.fireWorker();
+            } else if(choice == 3) {
+                WorkerInOut.displayStatistics();
+            } else {
+                Auth.logout();
+            }
         }
         System.out.print(Colors.ANSI_RESET);
     }
