@@ -230,6 +230,21 @@ public class DBApi {
         return workers;
     }
 
+    public static ArrayList<Worker> searchForWorker(String workerName) {
+        ArrayList<Worker> workers = new ArrayList<>();
+        try {
+
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from Worker where WorkerName like '%" + workerName + "%'");
+            while (resultSet.next()) {
+                workers.add(getWorkerFromRow(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return workers;
+    }
+
     public static ArrayList<Worker> getFreeWorkers() {
         ArrayList<Worker> freeWorkers = new ArrayList<>();
         try {
