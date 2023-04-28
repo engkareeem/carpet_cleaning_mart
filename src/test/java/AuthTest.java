@@ -3,9 +3,7 @@
 import com.carpetcleaningmart.Utils.Auth;
 
 import com.carpetcleaningmart.Utils.DBApi;
-import com.carpetcleaningmart.model.Customer;
 import com.carpetcleaningmart.model.User;
-import com.carpetcleaningmart.model.Worker;
 
 
 import org.junit.*;

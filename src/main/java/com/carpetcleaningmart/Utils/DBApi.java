@@ -230,12 +230,12 @@ public class DBApi {
         return workers;
     }
 
-    public static ArrayList<Worker> searchForWorker(String workerName) {
+    public static ArrayList<Worker> searchForWorkers(String workerName) {
         ArrayList<Worker> workers = new ArrayList<>();
         try {
 
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from Worker where WorkerName like '%" + workerName + "%'");
+            ResultSet resultSet = statement.executeQuery("select * from Worker where WorkerType = 'EMPLOYEE'");
             while (resultSet.next()) {
                 workers.add(getWorkerFromRow(resultSet));
             }
