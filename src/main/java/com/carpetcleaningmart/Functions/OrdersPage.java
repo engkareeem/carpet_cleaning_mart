@@ -12,9 +12,7 @@ public class OrdersPage {
         return size * category.price;
     }
 
-    public static double getDiscount(Order order) {
-        int timeServed = DBApi.getCustomer(order.getCustomerId()).getTimesServed();
-        double price = order.getPrice();
+    public static double getDiscount(double price,int timeServed) {
         double discount = 0;
         if (timeServed > 10) {
             if (price > 600) discount = 0.08;

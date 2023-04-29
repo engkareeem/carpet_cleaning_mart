@@ -57,18 +57,33 @@ public class DBApi {
 
     //===    Worker Section    ===\
 
-    public static void addWorker(Worker worker, String workerPassword){
+    //    public static void addWorker(Worker worker, String workerPassword){
+//
+//        try {
+//            Statement statement = connection.createStatement();
+//            statement.executeUpdate(String.format("insert into Worker(WorkerName, WorkerPhone, WorkerAddress, WorkerEmail, WorkerPassword, WorkerType) values('%s', '%s', '%s', '%s', '%s', '%s')", worker.getName(), worker.getPhone(), worker.getAddress(), worker.getEmail(), workerPassword, worker.getType()));
+//            distributeWaitingOrders();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    public static String addWorker(Worker worker, String workerPassword) {
 
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("insert into Worker(WorkerName, WorkerPhone, WorkerAddress, WorkerEmail, WorkerPassword, WorkerType) values('%s', '%s', '%s', '%s', '%s', '%s')", worker.getName(), worker.getPhone(), worker.getAddress(), worker.getEmail(), workerPassword, worker.getType()));
+            ResultSet resultSet = statement.executeQuery("select seq from sqlite_sequence where name = 'Worker'");
             distributeWaitingOrders();
+            if (resultSet.next()) {
+                return resultSet.getString("seq");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
-    public static void updateWorker(String workerId, Worker worker){
+    public static void updateWorker(String workerId, Worker worker) {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("update Worker set WorkerName = '%s', WorkerPhone = '%s', WorkerAddress = '%s', WorkerType = '%s' where WorkerId = '%s'", worker.getName(), worker.getPhone(), worker.getAddress(), worker.getType(), workerId));
@@ -77,7 +92,7 @@ public class DBApi {
         }
     }
 
-    public static void deleteWorker(String workerId){
+    public static void deleteWorker(String workerId) {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("delete from Worker where WorkerId = '%s'", workerId));
@@ -89,7 +104,7 @@ public class DBApi {
 
     //===    Customer Section    ===\
 
-    public static void addCustomer(Customer customer, String customerPassword){
+    public static void addCustomer(Customer customer, String customerPassword) {
 
         try {
             Statement statement = connection.createStatement();
@@ -99,21 +114,21 @@ public class DBApi {
         }
     }
 
-    public static Customer getCustomer(String customerId){
+    public static Customer getCustomer(String customerId) {
         try {
 
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(String.format("select * from Customer where CustomerId = '%s'", customerId));
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 return getCustomerFromRow(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return  new Customer();
+        return new Customer();
     }
 
-    public static void updateCustomer(String customerId ,Customer customer){
+    public static void updateCustomer(String customerId, Customer customer) {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("update Customer set CustomerName = '%s', CustomerPhone = '%s', CustomerAddress = '%s' where CustomerId = '%s'", customer.getName(), customer.getPhone(), customer.getAddress(), customerId));
@@ -122,7 +137,7 @@ public class DBApi {
         }
     }
 
-    public static void incrementCustomerTimesServed(String customerId){
+    public static void incrementCustomerTimesServed(String customerId) {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("update Customer set CustomerTimesServed = CustomerTimesServed + 1 where CustomerId = '%s'", customerId));
@@ -131,7 +146,7 @@ public class DBApi {
         }
     }
 
-    public static void deleteCustomer(String customerId){
+    public static void deleteCustomer(String customerId) {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("delete from Customer where CustomerId = '%s'", customerId));
@@ -140,7 +155,7 @@ public class DBApi {
         }
     }
 
-    public static void deleteTestCustomer(){
+    public static void deleteTestCustomer() {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from Customer where CustomerEmail = 'customer@gmail.com'");
@@ -154,24 +169,38 @@ public class DBApi {
 
     //===    Order Section    ===\
 
-    public static void addOrder(Order order){
+    //    public static void addOrder(Order order){
+//
+//        try {
+//            Statement statement = connection.createStatement();
+//            statement.executeUpdate(String.format("insert into  'Order' (OrderName, OrderDescription, OrderCategory, OrderPrice, CustomerId) values('%s', '%s', '%s', %f, '%s')", order.getName(), order.getDescription(), order.getCategory().toString(), order.getPrice(), order.getCustomerId()));
+//            distributeWaitingOrders();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    public static String addOrder(Order order) {
 
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("insert into  'Order' (OrderName, OrderDescription, OrderCategory, OrderPrice, CustomerId) values('%s', '%s', '%s', %f, '%s')", order.getName(), order.getDescription(), order.getCategory().toString(), order.getPrice(), order.getCustomerId()));
+            ResultSet resultSet = statement.executeQuery("select seq from sqlite_sequence where name = 'Order'");
             distributeWaitingOrders();
+            if (resultSet.next()) {
+                return resultSet.getString(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
-
-    public static Order getOrder(String orderId){
+    public static Order getOrder(String orderId) {
 
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet =  statement.executeQuery(String.format("select * from 'Order' where OrderId = '%s'", orderId));
-            if(resultSet.next()){
+            ResultSet resultSet = statement.executeQuery(String.format("select * from 'Order' where OrderId = '%s'", orderId));
+            if (resultSet.next()) {
                 return getOrderFromRow(resultSet);
             }
 
@@ -182,7 +211,7 @@ public class DBApi {
     }
 
 
-    public static void updateOrder(String orderId, Order order){
+    public static void updateOrder(String orderId, Order order) {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("update 'Order' set OrderName = '%s', OrderDescription = '%s', OrderPrice = %f where OrderId = '%s'", order.getName(), order.getDescription(), order.getPrice(), orderId));
@@ -192,7 +221,7 @@ public class DBApi {
         }
     }
 
-    public static void deleteOrder(String orderId){
+    public static void deleteOrder(String orderId) {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("delete from 'Order' where OrderId = '%s'", orderId));
@@ -204,20 +233,18 @@ public class DBApi {
 
     //===    Customer Utility Section    ===\
 
-    public static Integer getCustomersServedCount(){
+    public static Integer getCustomersServedCount() {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select sum(CustomerTimesServed) from Customer");
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 return resultSet.getInt(1);
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
-
-
 
 
     //===    Workers Utility Section    ===\
@@ -226,16 +253,16 @@ public class DBApi {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(String.format("select * from Worker where WorkerId = '%s'", id));
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 return getWorkerFromRow(resultSet);
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static void deleteTestWorker(){
+    public static void deleteTestWorker() {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate("delete from Worker where WorkerEmail = 'worker@gmail.com'");
@@ -245,42 +272,45 @@ public class DBApi {
     }
 
 
-    public static Worker getTestWorker(){
+    public static Worker getTestWorker() {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from Worker where WorkerType = 'EMPLOYEE' and WorkerEmail = 'worker@gmail.com'");
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 return getWorkerFromRow(resultSet);
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
+
     public static Worker getLastWorker() {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from Worker where WorkerType = 'EMPLOYEE' order by WorkerId desc limit 1");
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 return getWorkerFromRow(resultSet);
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
+
     public static Order getWorkerCurrentOrder(String workerId) {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(String.format("select * from 'Order' where WorkerId = '%s' and OrderStatus = 'IN_TREATMENT'", workerId));
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 return getOrderFromRow(resultSet);
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
+
     public static ArrayList<Worker> getAllWorkers() {
         ArrayList<Worker> workers = new ArrayList<>();
         try {
@@ -337,7 +367,7 @@ public class DBApi {
         return freeWorkers;
     }
 
-    public static void assignWorkerToAnOrder(String workerId, String orderId){
+    public static void assignWorkerToAnOrder(String workerId, String orderId) {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("update 'Order' set OrderStatus = 'IN_TREATMENT', WorkerId = '%s' where OrderId = '%s'", workerId, orderId));
@@ -346,7 +376,7 @@ public class DBApi {
         }
     }
 
-    public static void finishWorkOnAnOrder(String orderId){
+    public static void finishWorkOnAnOrder(String orderId) {
         try {
             Statement statement = connection.createStatement();
             Order order = getOrder(orderId);
@@ -370,12 +400,11 @@ public class DBApi {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(String.format("select count(*) from 'Order' where OrderStatus = '%s'", orderStatus.toString().toUpperCase()));
             return resultSet.getInt(1);
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
-
 
 
     public static ArrayList<Order> getAllOrders() {
@@ -407,6 +436,7 @@ public class DBApi {
         }
         return orders;
     }
+
     public static ArrayList<Order> getWaitingOrders() {
         ArrayList<Order> waitingOrders = new ArrayList<>();
         try {
@@ -424,60 +454,60 @@ public class DBApi {
 
 
     // distribute waiting orders on free workers
-    public static void distributeWaitingOrders(){
+    public static void distributeWaitingOrders() {
         ArrayList<Order> waitingOrders = getWaitingOrders();
         ArrayList<Worker> freeWorkers = getFreeWorkers();
-        if(freeWorkers.isEmpty()) return;
+        if (freeWorkers.isEmpty()) return;
         int index = 0;
         Random dice = new Random();
-        for(Order order : waitingOrders){
+        for (Order order : waitingOrders) {
             index = dice.nextInt(freeWorkers.size());
             assignWorkerToAnOrder(freeWorkers.get(index).getId(), order.getId());
             freeWorkers.remove(index);
         }
     }
 
-    public static void cancelOrder(String orderId){
+    public static void cancelOrder(String orderId) {
         deleteOrder(orderId);
     }
 
 
     //===    Auth Utility Section    ===\
 
-    public static Boolean isWorker(String email){
+    public static Boolean isWorker(String email) {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(String.format("select * from Worker where WorkerEmail = '%s'", email));
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 return true;
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public static boolean checkIfEmailUsed(String email){
+    public static boolean checkIfEmailUsed(String email) {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(String.format("select * from Customer where CustomerEmail = '%s'", email));
             if (resultSet.next()) {
                 return true;
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public static Customer signUp(Customer customer, String password){
+    public static Customer signUp(Customer customer, String password) {
         DBApi.addCustomer(customer, password);
 
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select seq from sqlite_sequence where name = 'Customer'");
             return getCustomer(resultSet.getString("seq"));
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -486,18 +516,17 @@ public class DBApi {
     }
 
 
-
-    public static Worker logInAsWorker(String email, String password){
+    public static Worker logInAsWorker(String email, String password) {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(String.format("select * from Worker where WorkerEmail = '%s'", email));
-            if(resultSet.next()) {
-                if(resultSet.getString("WorkerPassword").equals(password)){
+            if (resultSet.next()) {
+                if (resultSet.getString("WorkerPassword").equals(password)) {
                     return getWorkerFromRow(resultSet);
-                }else{
+                } else {
                     Interrupt.printError("Wrong password entered, Please try again.");
                 }
-            }else{
+            } else {
                 Interrupt.printError("User was not found, Please check your email.");
             }
         } catch (SQLException e) {
@@ -506,17 +535,17 @@ public class DBApi {
         return null;
     }
 
-    public static Customer loginAsCustomer(String email, String password){
+    public static Customer loginAsCustomer(String email, String password) {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(String.format("select * from Customer where CustomerEmail = '%s'", email));
-            if(resultSet.next()) {
-                if(resultSet.getString("CustomerPassword").equals(password)){
+            if (resultSet.next()) {
+                if (resultSet.getString("CustomerPassword").equals(password)) {
                     return getCustomerFromRow(resultSet);
-                }else{
+                } else {
                     Interrupt.printError("Wrong password entered, Please try again.");
                 }
-            }else{
+            } else {
                 Interrupt.printError("User was not found, Please check your email.");
             }
         } catch (SQLException e) {
@@ -524,7 +553,6 @@ public class DBApi {
         }
         return null;
     }
-
 
 
 }

@@ -31,7 +31,7 @@ public class Notifier {
 
         try {
             finishedOrder.setCustomerId(customer.getId());
-            double discount = OrdersPage.getDiscount(finishedOrder);
+            double discount = OrdersPage.getDiscount(finishedOrder.getPrice(), customer.getTimesServed());
             double totalPrice = finishedOrder.getPrice() - discount * finishedOrder.getPrice();
             String discountMsg = String.format("And you have received a discount! The new price is %.2f$.", totalPrice);
 
