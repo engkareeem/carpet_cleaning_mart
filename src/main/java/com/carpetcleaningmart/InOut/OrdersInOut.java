@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class OrdersInOut {
+    // === Customer Page === \\
     public static void createNewOrder() {
         Product.Category category;
         Scanner scanner = new Scanner(System.in);
@@ -24,15 +25,27 @@ public class OrdersInOut {
         UtilsInOut.printContentRow(" 1. Carpet");
         UtilsInOut.printContentRow(" 2. Cover");
         UtilsInOut.printContentRow(" 3. Mattress");
+        UtilsInOut.printContentRow(" 4. BLIND");
+        UtilsInOut.printContentRow(" 5. CURTAIN");
+        UtilsInOut.printContentRow(" 6. TILE");
+        UtilsInOut.printContentRow(" 7. Return");
         UtilsInOut.printSeparator();
-        choice = Interrupt.readChoice(3);
+        choice = Interrupt.readChoice(7);
 
         if (choice == 1) {
             category = Product.Category.CARPET;
         } else if (choice == 2) {
             category = Product.Category.COVER;
-        } else {
+        } else if(choice == 3){
             category = Product.Category.MATTRESS;
+        }else if(choice == 4){
+            category = Product.Category.BLIND;
+        }else if(choice == 5){
+            category = Product.Category.CURTAIN;
+        } else if(choice == 6){
+            category = Product.Category.TILE;
+        } else {
+            return;
         }
 
         UtilsInOut.printSeparator();
@@ -54,7 +67,7 @@ public class OrdersInOut {
         Order order = new Order(category, name, description, Order.Status.WAITING, price, Auth.getCurrentUser().getId());
         DBApi.addOrder(order);
         Interrupt.printSuccess("The order created successfully");
-        Interrupt.readChoice(0, "Enter any number to return..");
+        Interrupt.waitKey();
 
         System.out.print(Colors.ANSI_RESET);
 
@@ -98,17 +111,19 @@ public class OrdersInOut {
         UtilsInOut.printContentRow("Order status: " + Utils.textToName(order.getStatus().toString().replace("_"," ")));
         UtilsInOut.printContentRow("Order description: " + order.getDescription());
         UtilsInOut.printContentRow("Total price: " + order.getPrice());
-        UtilsInOut.printContentRow(" 1. Cancel order", Colors.ANSI_GREEN);
-        UtilsInOut.printContentRow(" 2. Return", Colors.ANSI_GREEN);
+        int i = 1;
+        if(!Auth.getIsWorker() && order.getStatus() != Order.Status.COMPLETE) UtilsInOut.printContentRow(String.format(" %d. %s",i++,"Cancel order"), Colors.ANSI_GREEN);
+        UtilsInOut.printContentRow(String.format(" %d. %s",i,"Return"), Colors.ANSI_GREEN);
         UtilsInOut.printSeparator();
-        int choice = Interrupt.readChoice(2);
-        if (choice == 1) {
+        int choice = Interrupt.readChoice(i);
+        if (choice == i - 1) {
             DBApi.cancelOrder(order.getId());
             Interrupt.printSuccess("The order canceled successfully.");
-            Interrupt.readChoice(0, "Enter any number to return..");
+            Interrupt.waitKey();
         }
     }
 
+    // === Worker Page === \\
     public static void displayCurrentOrder() {
         Order order = DBApi.getWorkerCurrentOrder(Auth.getCurrentUser().getId());
 
@@ -130,7 +145,27 @@ public class OrdersInOut {
                 DBApi.finishWorkOnAnOrder(order.getId());
             }
         }
+    }
 
+    public static void displayPreviousOrders() {
+        do {
+            UtilsInOut.clear();
+            UtilsInOut.printHeader("Your Previous Orders");
+            ArrayList<Order> orders = DBApi.getWorkerPreviousOrders(Auth.getCurrentUser().getId());
+            int i = 1;
+            for(Order order:orders) {
+                UtilsInOut.printContentRow(String.format("%d. %s - %s",i++,order.getName(),order.getDescription()));
+            }
+            if(orders.isEmpty()) UtilsInOut.printContentRow("You dont have any previous orders.");
+            UtilsInOut.printContentRow(String.format("%d. %s",i,"Return"));
+            UtilsInOut.printSeparator();
+            int choice = Interrupt.readChoice(i,"Enter order number to view: ");
+            if(choice != i) {
+                displayOrder(orders.get(choice - 1));
+            } else {
+                break;
+            }
+        } while(true);
 
     }
 

@@ -17,11 +17,11 @@ public class OrdersPage {
         double price = order.getPrice();
         double discount = 0;
         if (timeServed > 10) {
-            if (price > 600) discount = price * 0.08;
-            else if (price > 200) discount = price * 0.05;
+            if (price > 600) discount = 0.08;
+            else if (price > 200) discount = 0.05;
         } else if (timeServed > 3) {
-            if (price > 600) discount = price * 0.04;
-            if (price > 400) discount = price * 0.02;
+            if (price > 600) discount = 0.04;
+            if (price > 400) discount = 0.02;
         }
         return discount;
     }

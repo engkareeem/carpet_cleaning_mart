@@ -5,7 +5,7 @@ import com.carpetcleaningmart.Utils.Colors;
 public class UtilsInOut {
     public static void printHeader(String title) {
         printSeparator();
-        System.out.printf("|%38s%-38s|\n", title.substring(0, title.length() / 2), title.substring(title.length() / 2 + 1));
+        System.out.printf("|%38s%-38s|\n", title.substring(0, title.length() / 2), title.substring(title.length() / 2));
         printSeparator();
     }
 
@@ -14,7 +14,7 @@ public class UtilsInOut {
     }
 
     public static void clear() {
-        System.out.println("\n\n\n\n\n\n\n\n");
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         System.out.flush();
     }
 
