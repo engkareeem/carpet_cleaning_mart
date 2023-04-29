@@ -1,9 +1,4 @@
 package com.carpetcleaningmart.Functions;
-
-import com.carpetcleaningmart.Utils.Auth;
-import com.carpetcleaningmart.Utils.DBApi;
-import com.carpetcleaningmart.model.Customer;
-import com.carpetcleaningmart.model.Order;
 import com.carpetcleaningmart.model.Product;
 
 public class OrdersPage {

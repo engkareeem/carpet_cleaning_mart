@@ -1,7 +1,5 @@
 package com.carpetcleaningmart.model;
 
-import java.util.Objects;
-
 public class Product {
     public enum Category {
         CARPET(5),COVER(3), BLIND(2), CURTAIN(3), MATTRESS(4), TILE(6);

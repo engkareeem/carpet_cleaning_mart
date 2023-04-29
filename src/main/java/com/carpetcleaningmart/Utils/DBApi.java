@@ -3,8 +3,6 @@ package com.carpetcleaningmart.Utils;
 import com.carpetcleaningmart.model.Customer;
 import com.carpetcleaningmart.model.Order;
 import com.carpetcleaningmart.model.Worker;
-
-import java.security.PublicKey;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -57,16 +55,6 @@ public class DBApi {
 
     //===    Worker Section    ===\
 
-    //    public static void addWorker(Worker worker, String workerPassword){
-//
-//        try {
-//            Statement statement = connection.createStatement();
-//            statement.executeUpdate(String.format("insert into Worker(WorkerName, WorkerPhone, WorkerAddress, WorkerEmail, WorkerPassword, WorkerType) values('%s', '%s', '%s', '%s', '%s', '%s')", worker.getName(), worker.getPhone(), worker.getAddress(), worker.getEmail(), workerPassword, worker.getType()));
-//            distributeWaitingOrders();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
     public static String addWorker(Worker worker, String workerPassword) {
 
         try {

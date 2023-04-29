@@ -19,12 +19,12 @@ public class Utils {
         return nameSlices[0];
     }
 
-    public static boolean isNum(String number) {
+    public static boolean isNotNum(String number) {
         try {
             Double.parseDouble(number);
-            return true;
-        } catch (Exception e) {
             return false;
+        } catch (Exception e) {
+            return true;
         }
     }
 }

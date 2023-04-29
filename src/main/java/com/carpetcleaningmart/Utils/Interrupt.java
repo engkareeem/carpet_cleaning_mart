@@ -16,7 +16,7 @@ public class Interrupt {
         Scanner scanner = new Scanner(System.in);
         System.out.print(message);
         String input = scanner.next();
-        while (!Utils.isNum(input)) {
+        while (Utils.isNotNum(input)) {
             System.out.println(Colors.ANSI_RED + "Your choice is invalid." + Colors.ANSI_DEFAULT);
             System.out.print(message);
             input = scanner.next();
@@ -35,7 +35,7 @@ public class Interrupt {
         Scanner scanner = new Scanner(System.in);
         System.out.print(message);
         String number = scanner.next();
-        while (!Utils.isNum(number)) {
+        while (Utils.isNotNum(number)) {
             System.out.println(Colors.ANSI_RED + "The number is invalid." + Colors.ANSI_DEFAULT);
             System.out.print(message);
             number = scanner.next();
@@ -76,11 +76,11 @@ public class Interrupt {
         String message = "Enter phone number: ";
         System.out.print(message);
         String phone = scanner.next();
-        while (!Utils.isNum(phone)) {
+        do {
             printError("The phone number is invalid.");
             System.out.print(message);
             phone = scanner.next();
-        }
+        } while (Utils.isNotNum(phone));
         return phone;
     }
 
