@@ -33,7 +33,7 @@ public class Notifier {
             finishedOrder.setCustomerId(customer.getId());
             double discount = OrdersPage.getDiscount(finishedOrder);
             double totalPrice = finishedOrder.getPrice() - discount * finishedOrder.getPrice();
-            String discountMsg = String.format("\"You've received a discount! The new price is %.2f$.\";", totalPrice);
+            String discountMsg = String.format("And you have received a discount! The new price is %.2f$.", totalPrice);
 
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(senderEmail));

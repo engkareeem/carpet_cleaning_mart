@@ -221,6 +221,54 @@ public class DBApi {
 
 
     //===    Workers Utility Section    ===\
+
+    public static Worker getWorkerById(String id) {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(String.format("select * from Worker where WorkerId = '%s'", id));
+            if (resultSet.next()){
+                return getWorkerFromRow(resultSet);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void deleteTestWorker(){
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("delete from Worker where WorkerEmail = 'worker@gmail.com'");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static Worker getTestWorker(){
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from Worker where WorkerType = 'EMPLOYEE' and WorkerEmail = 'worker@gmail.com'");
+            if (resultSet.next()){
+                return getWorkerFromRow(resultSet);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static Worker getLastWorker() {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from Worker where WorkerType = 'EMPLOYEE' order by WorkerId desc limit 1");
+            if (resultSet.next()){
+                return getWorkerFromRow(resultSet);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public static Order getWorkerCurrentOrder(String workerId) {
         try {
             Statement statement = connection.createStatement();
@@ -232,19 +280,6 @@ public class DBApi {
             e.printStackTrace();
         }
         return null;
-    }
-    public static ArrayList<Order> getWorkerPreviousOrders(String workerId) {
-        ArrayList<Order> orders = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(String.format("select * from 'Order' where WorkerId = '%s' and OrderStatus <> 'IN_TREATMENT'", workerId));
-            while (resultSet.next()) {
-                orders.add(getOrderFromRow(resultSet));
-            }
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return orders;
     }
     public static ArrayList<Worker> getAllWorkers() {
         ArrayList<Worker> workers = new ArrayList<>();
@@ -321,7 +356,7 @@ public class DBApi {
             statement.executeUpdate(String.format("update 'Order' set OrderStatus = 'COMPLETE' where OrderId = '%s'", orderId));
             statement.executeUpdate(String.format("update Customer set CustomerTimesServed = CustomerTimesServed + 1 where CustomerId in (select 'Order'.CustomerId from 'Order' where 'Order'.OrderId = '%s')", orderId));
             distributeWaitingOrders();
-//            Notifier.sendEmail(customer, order);
+            Notifier.sendEmail(customer, order);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -447,7 +482,7 @@ public class DBApi {
         }
 
 
-        return new Customer();
+        return null;
     }
 
 
@@ -468,7 +503,7 @@ public class DBApi {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new Worker();
+        return null;
     }
 
     public static Customer loginAsCustomer(String email, String password){
@@ -487,10 +522,8 @@ public class DBApi {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new Customer();
+        return null;
     }
-
-
 
 
 

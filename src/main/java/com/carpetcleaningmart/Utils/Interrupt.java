@@ -49,13 +49,6 @@ public class Interrupt {
         return scanner.nextLine();
     }
 
-    public static void waitKey() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print(Colors.ANSI_PURPLE + "Enter anything to return... ");
-        scanner.next();
-        scanner.reset();
-    }
-
     //=== Auth reader section ===\\
     public static String readEmail() {
         Scanner scanner = new Scanner(System.in);

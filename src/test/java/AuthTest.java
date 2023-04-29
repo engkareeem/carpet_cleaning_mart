@@ -7,26 +7,31 @@ import com.carpetcleaningmart.model.User;
 
 
 import org.junit.*;
+import org.junit.runners.MethodSorters;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
+
+@FixMethodOrder(MethodSorters.JVM)
 public class AuthTest {
 
     private User user;
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         user = null;
     }
 
-    @AfterClass
-    public static void tearDown() throws Exception {
+    @After
+    public void tearDown()  {
         DBApi.deleteTestCustomer();
     }
 
     @Test
-    public void testSignUpCustomer() {
+    public void testSignUpCustomer() throws InterruptedException {
         Auth.signUp("customer@gmail.com", "Ahmad Moneer", "Nablus, Rafidya", "059-872-8291", "123123");
         user = Auth.getCurrentUser();
 
@@ -42,6 +47,7 @@ public class AuthTest {
 
     @Test
     public void testLogIn() {
+        Auth.signUp("customer@gmail.com", "Ahmad Moneer", "Nablus, Rafidya", "059-872-8291", "123123");
         Auth.logIn("customer@gmail.com", "123123");
         user = Auth.getCurrentUser();
         assertNotNull(Auth.getCurrentUser());
@@ -51,6 +57,8 @@ public class AuthTest {
 
     @Test
     public void testLogOut() {
+        Auth.signUp("customer@gmail.com", "Ahmad Moneer", "Nablus, Rafidya", "059-872-8291", "123123");
+
         Auth.logIn("customer@gmail.com", "123123");
         user = Auth.getCurrentUser();
         assertNotNull(user);
@@ -61,6 +69,10 @@ public class AuthTest {
 
     @Test
     public void testIsLoggedIn() {
+        Auth.signUp("customer@gmail.com", "Ahmad Moneer", "Nablus, Rafidya", "059-872-8291", "123123");
+
+        Auth.logIn("customer@gmail.com", "123123");
+
         Auth.logout();
         assertFalse(Auth.isLoggedIn());
         Auth.logIn("customer@gmail.com", "123123");

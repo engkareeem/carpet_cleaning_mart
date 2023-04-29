@@ -22,14 +22,14 @@ public class WorkerInOut {
         UtilsInOut.printContentRow("In Treatment orders: " + inTreatmentOrders);
         UtilsInOut.printContentRow("Completed orders: " + completedOrders);
         UtilsInOut.printSeparator();
-        Interrupt.waitKey();
+        Interrupt.readChoice(0, "Enter any number to return.. ");
     }
 
     public static void hireWorker() {
         Worker worker = AuthInOut.hireWorker();
         Interrupt.printSuccess(worker.getName() + " Has been hired successfully.");
         System.out.println();
-        Interrupt.waitKey();
+        Interrupt.readChoice(0, "Enter any number to return: ");
     }
 
     public static void fireWorker() {
@@ -37,7 +37,7 @@ public class WorkerInOut {
         ArrayList<Worker> workers = DBApi.searchForWorkers(name);
         if (workers.isEmpty()) {
             Interrupt.printError("There is no workers with that name..");
-            Interrupt.waitKey();
+            Interrupt.readChoice(0, "Type any number to return.. ");
         } else {
             UtilsInOut.printSeparator();
             int i = 1;
@@ -51,7 +51,7 @@ public class WorkerInOut {
                 Worker worker = workers.get(choice - 1);
                 DBApi.deleteWorker(worker.getId());
                 Interrupt.printSuccess(worker.getName() + " has been fired successfully. ");
-                Interrupt.waitKey();
+                Interrupt.readChoice(0, "Enter any number to return: ");
             }
         }
     }

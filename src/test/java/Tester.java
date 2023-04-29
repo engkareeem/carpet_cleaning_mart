@@ -1,3 +1,4 @@
+import io.cucumber.java.bs.A;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
@@ -13,4 +14,13 @@ import org.junit.runner.RunWith;
 )
 
 public class Tester {
+    static AuthTest authTest = new AuthTest();
+
+    public static void main(String[] args) throws InterruptedException {
+        authTest.testSignUpCustomer();
+        authTest.testLogIn();
+        authTest.testIsLoggedIn();
+        authTest.testLogOut();
+
+    }
 }

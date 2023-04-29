@@ -19,29 +19,25 @@ public class Auth {
 
         currentUser = DBApi.signUp(customer, password);
 
-        if(currentUser.getId() == null){
-            currentUser = null;
+        if(currentUser == null){
+
             isWorker = null;
         }
 
     }
 
     public static void logIn(String email, String password){
-        if(DBApi.isWorker(email)){ // Sign In As a worker
+        if(DBApi.isWorker(email)){ // log In As a worker
             isWorker = true;
             currentUser = DBApi.logInAsWorker(email, password);
-            if(currentUser.getId() != null){
+            if(currentUser!= null){
                 role = ((Worker) currentUser).getType();
-            }else{
-                currentUser = null;
             }
-        }else{ // Sign In As a Customer
+        }else{ // log In As a Customer
             isWorker = false;
             currentUser = DBApi.loginAsCustomer(email, password);
-            if(currentUser.getId() != null){
+            if(currentUser != null){
                 role = null;
-            }else{
-                currentUser = null;
             }
 
         }
