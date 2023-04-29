@@ -29,11 +29,14 @@ public class MainInOut {
         } else if (Auth.getRole() == Worker.WorkerType.EMPLOYEE) {
             UtilsInOut.printHeader("Main Menu");
             UtilsInOut.printContentRow("1. View current order");
-            UtilsInOut.printContentRow("2. Logout");
+            UtilsInOut.printContentRow("2. View your previous orders");
+            UtilsInOut.printContentRow("3. Logout");
             UtilsInOut.printSeparator();
-            choice = Interrupt.readChoice(2);
+            choice = Interrupt.readChoice(3);
             if (choice == 1) {
                 OrdersInOut.displayCurrentOrder();
+            } else if(choice == 2) {
+                OrdersInOut.displayPreviousOrders();
             } else {
                 Auth.logout();
             }
