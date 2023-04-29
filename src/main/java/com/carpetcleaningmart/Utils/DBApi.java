@@ -3,8 +3,6 @@ package com.carpetcleaningmart.Utils;
 import com.carpetcleaningmart.model.Customer;
 import com.carpetcleaningmart.model.Order;
 import com.carpetcleaningmart.model.Worker;
-
-import java.security.PublicKey;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -94,14 +92,19 @@ public class DBApi {
 
     //===    Customer Section    ===\
 
-    public static void addCustomer(Customer customer, String customerPassword) {
+    public static String addCustomer(Customer customer, String customerPassword){
 
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("insert into Customer(CustomerName, CustomerPhone, CustomerAddress, CustomerEmail, CustomerPassword, CustomerTimesServed) values('%s', '%s', '%s', '%s', '%s', 0)", customer.getName(), customer.getPhone(), customer.getAddress(), customer.getEmail(), customerPassword));
+            ResultSet resultSet = statement.executeQuery("select seq from sqlite_sequence where name = 'Customer'");
+            if (resultSet.next()) {
+                return resultSet.getString("seq");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public static Customer getCustomer(String customerId) {

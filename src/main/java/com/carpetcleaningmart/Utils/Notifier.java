@@ -4,7 +4,10 @@ import com.carpetcleaningmart.Functions.OrdersPage;
 import com.carpetcleaningmart.model.Customer;
 import com.carpetcleaningmart.model.Order;
 
+import java.io.File;
 import java.util.Properties;
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
 public class Notifier {
@@ -35,13 +38,22 @@ public class Notifier {
             double totalPrice = finishedOrder.getPrice() - discount * finishedOrder.getPrice();
             String discountMsg = String.format("And you have received a discount! The new price is %.2f$.", totalPrice);
 
-            Message message = new MimeMessage(session);
+            Invoice.generateInvoice(finishedOrder, customer, discount, totalPrice);
+
+
+            MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(senderEmail));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(customer.getEmail()));
             message.setSubject(String.format("Your %s is now Ready!", finishedOrder.getCategory().toString().toLowerCase()));
-            message.setText(
-                    String.format("""
+
+
+
+            Multipart multipart = new MimeMultipart();
+
+
+            MimeBodyPart textBodyPart = new MimeBodyPart();
+            textBodyPart.setText(String.format("""
                                     Dear %s,
                                                         
                                     We are pleased to inform you that your %s  is now ready and available to be taken!
@@ -54,7 +66,24 @@ public class Notifier {
                                                         
                                     Best regards,
                                     Carpet Cleaning Mart.        \s
-                            """, customer.getName(), finishedOrder.getCategory().toString().toLowerCase(), finishedOrder.getDescription(), finishedOrder.getPrice(), discount > 0 ? discountMsg : ""));
+                            """, customer.getName(), finishedOrder.getCategory().toString().toLowerCase(), finishedOrder.getDescription(), finishedOrder.getPrice(), discount > 0 ? discountMsg : "")); // Set the message body text
+
+
+            multipart.addBodyPart(textBodyPart);
+
+
+            MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+            FileDataSource fileDataSource = new FileDataSource(new File("invoice.pdf"));
+            attachmentBodyPart.setDataHandler(new DataHandler(fileDataSource));
+            attachmentBodyPart.setFileName(fileDataSource.getName());
+
+
+            multipart.addBodyPart(attachmentBodyPart);
+
+
+            message.setContent(multipart);
+
+
 
             Transport.send(message);
 

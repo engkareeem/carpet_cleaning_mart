@@ -1,3 +1,5 @@
+package Test;
+
 import com.carpetcleaningmart.Functions.OrdersPage;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
