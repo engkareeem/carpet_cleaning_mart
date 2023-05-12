@@ -8,12 +8,13 @@ import com.carpetcleaningmart.utils.Printer;
 
 public class MainInOut {
     public static void mainMenu() {
+        String title = "Main Menu";
 
         UtilsInOut.clear();
         int choice;
         Printer.print(Colors.ANSI_DEFAULT);
         if (!Auth.getIsWorker()) {
-            UtilsInOut.printHeader("Main Menu");
+            UtilsInOut.printHeader(title);
             UtilsInOut.printContentRow("1. Make new order");
             UtilsInOut.printContentRow("2. Track your orders");
             UtilsInOut.printContentRow("3. Logout");
@@ -28,7 +29,7 @@ public class MainInOut {
                 Auth.logout();
             }
         } else if (Auth.getRole() == Worker.WorkerType.EMPLOYEE) {
-            UtilsInOut.printHeader("Main Menu");
+            UtilsInOut.printHeader(title);
             UtilsInOut.printContentRow("1. View current order");
             UtilsInOut.printContentRow("2. View your previous orders");
             UtilsInOut.printContentRow("3. Logout");
@@ -42,7 +43,7 @@ public class MainInOut {
                 Auth.logout();
             }
         } else if (Auth.getRole() == Worker.WorkerType.ADMIN) {
-            UtilsInOut.printHeader("Main Menu");
+            UtilsInOut.printHeader(title);
             UtilsInOut.printContentRow("1. Hire Worker");
             UtilsInOut.printContentRow("2. Fire Worker");
             UtilsInOut.printContentRow("3. Statistics");

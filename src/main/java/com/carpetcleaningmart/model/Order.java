@@ -10,7 +10,7 @@ public class Order extends Product {
     private String customerId;
 
     public Order() {
-
+        // Do nothing
     }
 
     public Order(Category category, String name, String description, Status status, Double price, String customerId) {

@@ -8,7 +8,7 @@ public class Worker extends User {
 
 
     public Worker(){
-
+        // Do nothing
     }
 
     public Worker(String id, String name, String phone, String address, String email, WorkerType type) {

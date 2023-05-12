@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class DBApi {
     public static Connection connection = DBConnection.getConnection();
+    private static final String customerIdStr = "CustomerId";
 
     //===    Helper Functions Section    ===\
     private static Worker getWorkerFromRow(ResultSet resultSet) throws SQLException {
@@ -29,7 +30,7 @@ public class DBApi {
     private static Customer getCustomerFromRow(ResultSet resultSet) throws SQLException {
         Customer customer = new Customer();
 
-        customer.setId(resultSet.getString("CustomerId"));
+        customer.setId(resultSet.getString(customerIdStr));
         customer.setName(resultSet.getString("CustomerName"));
         customer.setPhone(resultSet.getString("CustomerPhone"));
         customer.setAddress(resultSet.getString("CustomerAddress"));
@@ -48,7 +49,7 @@ public class DBApi {
         order.setStatus(resultSet.getString("OrderStatus"));
         order.setCategory(resultSet.getString("OrderCategory"));
         order.setPrice(resultSet.getDouble("OrderPrice"));
-        order.setCustomerId(resultSet.getString("CustomerId"));
+        order.setCustomerId(resultSet.getString(customerIdStr));
         return order;
     }
 
@@ -152,7 +153,7 @@ public class DBApi {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from Customer where CustomerEmail = 'customer@gmail.com'");
             resultSet.next();
-            String customerId = resultSet.getString("CustomerId");
+            String customerId = resultSet.getString(customerIdStr);
             statement.executeUpdate(String.format("delete from Customer where CustomerId = '%s'", customerId));
         } catch (SQLException e) {
            Printer.printError(e.getMessage());

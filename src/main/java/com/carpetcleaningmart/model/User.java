@@ -9,7 +9,7 @@ public class User {
 
 
     public User(){
-
+        // Do nothing
     }
 
     public User(String id, String name, String phone, String address, String email) {

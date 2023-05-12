@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class OrdersInOut {
+
+    private static String returnStr = "Return";
+
     public static void createNewOrder() {
         Product.Category category;
         Scanner scanner = new Scanner(System.in);
@@ -80,7 +83,7 @@ public class OrdersInOut {
             if (orders.isEmpty()) {
                 UtilsInOut.printContentRow("You does not have any order..");
             }
-            UtilsInOut.printContentRow(i + ". " + "Return");
+            UtilsInOut.printContentRow(i + ". " + returnStr);
 
             UtilsInOut.printSeparator();
 
@@ -106,7 +109,7 @@ public class OrdersInOut {
         UtilsInOut.printContentRow("Total price: " + order.getPrice());
         int i = 1;
         if(!Auth.getIsWorker() && order.getStatus() != Order.Status.COMPLETE) UtilsInOut.printContentRow(String.format(" %d. %s",i++,"Cancel order"), Colors.ANSI_GREEN);
-        UtilsInOut.printContentRow(String.format(" %d. %s",i,"Return"), Colors.ANSI_GREEN);
+        UtilsInOut.printContentRow(String.format(" %d. %s",i,returnStr), Colors.ANSI_GREEN);
         UtilsInOut.printSeparator();
         int choice = Interrupt.readChoice(i);
         if (choice == i - 1) {
@@ -123,7 +126,7 @@ public class OrdersInOut {
         UtilsInOut.printHeader("Your current order");
         if (order == null) {
             UtilsInOut.printContentRow("You dont have order to work at.");
-            UtilsInOut.printContentRow("1. Return");
+            UtilsInOut.printContentRow("1. " + returnStr);
             UtilsInOut.printSeparator();
             Interrupt.readChoice(1);
         } else {
@@ -131,7 +134,7 @@ public class OrdersInOut {
             UtilsInOut.printContentRow("Order description: " + order.getDescription());
             UtilsInOut.printContentRow("Total price: " + order.getPrice());
             UtilsInOut.printContentRow(" 1. Finish order", Colors.ANSI_GREEN);
-            UtilsInOut.printContentRow(" 2. Return", Colors.ANSI_GREEN);
+            UtilsInOut.printContentRow(" 2. " + returnStr, Colors.ANSI_GREEN);
             UtilsInOut.printSeparator();
             int choice = Interrupt.readChoice(2);
             if (choice == 1) {

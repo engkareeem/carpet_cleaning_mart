@@ -14,7 +14,7 @@ public class Product {
     private String description;
 
     public Product(){
-
+        // Do nothing
     }
 
     public Product(Category category, String name, String description) {

@@ -6,7 +6,7 @@ public class Customer extends User {
     private Integer timesServed;
 
     public Customer(){
-
+        // Do nothing
     }
 
 
