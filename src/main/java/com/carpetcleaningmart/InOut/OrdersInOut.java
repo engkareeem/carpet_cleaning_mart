@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class OrdersInOut {
 
-    private static final String returnStr = "Return";
+    private static final String RETURN = "Return";
 
     private OrdersInOut(){
         // Do nothing
@@ -76,7 +76,7 @@ public class OrdersInOut {
     public static void displayOrders() {
         do {
             UtilsInOut.clear();
-            ArrayList<Order> orders = DBApi.getCustomerOrder(Auth.getCurrentUser().getId());
+            ArrayList<Order> orders = (ArrayList<Order>) DBApi.getCustomerOrder(Auth.getCurrentUser().getId());
             Printer.print(Colors.ANSI_DEFAULT);
             UtilsInOut.printHeader("Your Orders");
 
@@ -87,7 +87,7 @@ public class OrdersInOut {
             if (orders.isEmpty()) {
                 UtilsInOut.printContentRow("You does not have any order..");
             }
-            UtilsInOut.printContentRow(i + ". " + returnStr);
+            UtilsInOut.printContentRow(i + ". " + RETURN);
 
             UtilsInOut.printSeparator();
 
@@ -113,7 +113,7 @@ public class OrdersInOut {
         UtilsInOut.printContentRow("Total price: " + order.getPrice());
         int i = 1;
         if(!Auth.getIsWorker() && order.getStatus() != Order.Status.COMPLETE) UtilsInOut.printContentRow(String.format(" %d. %s",i++,"Cancel order"), Colors.ANSI_GREEN);
-        UtilsInOut.printContentRow(String.format(" %d. %s",i,returnStr), Colors.ANSI_GREEN);
+        UtilsInOut.printContentRow(String.format(" %d. %s",i,RETURN), Colors.ANSI_GREEN);
         UtilsInOut.printSeparator();
         int choice = Interrupt.readChoice(i);
         if (choice == i - 1) {
@@ -130,7 +130,7 @@ public class OrdersInOut {
         UtilsInOut.printHeader("Your current order");
         if (order == null) {
             UtilsInOut.printContentRow("You dont have order to work at.");
-            UtilsInOut.printContentRow("1. " + returnStr);
+            UtilsInOut.printContentRow("1. " + RETURN);
             UtilsInOut.printSeparator();
             Interrupt.readChoice(1);
         } else {
@@ -138,7 +138,7 @@ public class OrdersInOut {
             UtilsInOut.printContentRow("Order description: " + order.getDescription());
             UtilsInOut.printContentRow("Total price: " + order.getPrice());
             UtilsInOut.printContentRow(" 1. Finish order", Colors.ANSI_GREEN);
-            UtilsInOut.printContentRow(" 2. " + returnStr, Colors.ANSI_GREEN);
+            UtilsInOut.printContentRow(" 2. " + RETURN, Colors.ANSI_GREEN);
             UtilsInOut.printSeparator();
             int choice = Interrupt.readChoice(2);
             if (choice == 1) {
@@ -151,13 +151,13 @@ public class OrdersInOut {
         do {
             UtilsInOut.clear();
             UtilsInOut.printHeader("Your Previous Orders");
-            ArrayList<Order> orders = DBApi.getWorkerPreviousOrders(Auth.getCurrentUser().getId());
+            ArrayList<Order> orders = (ArrayList<Order>) DBApi.getWorkerPreviousOrders(Auth.getCurrentUser().getId());
             int i = 1;
             for(Order order:orders) {
                 UtilsInOut.printContentRow(String.format("%d. %s - %s",i++,order.getName(),order.getDescription()));
             }
             if(orders.isEmpty()) UtilsInOut.printContentRow("You dont have any previous orders.");
-            UtilsInOut.printContentRow(String.format("%d. %s",i,"Return"));
+            UtilsInOut.printContentRow(String.format("%d. %s",i,RETURN));
             UtilsInOut.printSeparator();
             int choice = Interrupt.readChoice(i,"Enter order number to view: ");
             if(choice != i) {

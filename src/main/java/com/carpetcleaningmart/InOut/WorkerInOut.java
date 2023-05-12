@@ -39,7 +39,7 @@ public class WorkerInOut {
 
     public static void fireWorker() {
         String name = Interrupt.readString("Enter the worker name: ");
-        ArrayList<Worker> workers = DBApi.searchForWorkers(name);
+        ArrayList<Worker> workers = (ArrayList<Worker>) DBApi.searchForWorkers(name);
         if (workers.isEmpty()) {
             Interrupt.printError("There is no workers with that name..");
             Interrupt.readChoice(0, "Type any number to return.. ");
