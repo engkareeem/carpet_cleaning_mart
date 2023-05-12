@@ -63,7 +63,7 @@ public class AuthTest {
         assertNotNull(user);
         Auth.logout();
         assertNull(Auth.getCurrentUser());
-        assertNull(Auth.getIsWorker());
+        assertFalse(Auth.hasRole());
     }
 
     @Test

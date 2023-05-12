@@ -76,7 +76,7 @@ public class LoginSteps {
 
     @And("the user should not have a role")
     public void theUserShouldNotHaveARole() {
-        assertNull(Auth.getIsWorker());
+        assertFalse(Auth.hasRole());
     }
 
     @And("the user should be able to log out")

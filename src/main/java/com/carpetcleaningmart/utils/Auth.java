@@ -63,7 +63,9 @@ public class Auth {
         return currentUser != null;
     }
 
-
+    public static boolean hasRole(){
+        return role != null;
+    }
     public static void logout(){
         currentUser = null;
         isWorker = null;
