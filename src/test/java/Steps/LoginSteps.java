@@ -53,6 +53,7 @@ public class LoginSteps {
         assertEquals(string2, user.getName());
         assertEquals(string3, user.getAddress());
         assertEquals(string4, user.getPhone());
+
     }
     @Then("the user should not be a worker")
     public void the_user_should_not_be_a_worker() {
