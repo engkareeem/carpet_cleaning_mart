@@ -51,7 +51,7 @@ public class Auth {
         return currentUser;
     }
 
-    public static Boolean getIsWorker() {
+    public static boolean getIsWorker() {
         return isWorker;
     }
 
