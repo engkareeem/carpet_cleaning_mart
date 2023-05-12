@@ -56,12 +56,5 @@ public class Order extends Product {
         this.customerId = customerId;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + "Order{" +
-                "status=" + status +
-                ", price=" + price +
-                ", customerId='" + customerId + '\'' +
-                '}';
-    }
+
 }

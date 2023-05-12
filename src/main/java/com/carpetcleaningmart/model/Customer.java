@@ -9,10 +9,6 @@ public class Customer extends User {
 
     }
 
-    public Customer(String id, String name, String phone, String address, String email, Integer timesServed) {
-        super(id, name, phone, address, email);
-        this.timesServed = timesServed;
-    }
 
     public Integer getTimesServed() {
         return timesServed;
@@ -22,10 +18,4 @@ public class Customer extends User {
         this.timesServed = timesServed;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "timesServed=" + timesServed +
-                '}';
-    }
 }

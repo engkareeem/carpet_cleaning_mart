@@ -5,17 +5,15 @@ public class Worker extends User {
 
     private WorkerType type;
 
-    private String orderId;
 
 
     public Worker(){
 
     }
 
-    public Worker(String id, String name, String phone, String address, String email, WorkerType type, String orderId) {
+    public Worker(String id, String name, String phone, String address, String email, WorkerType type) {
         super(id, name, phone, address, email);
         this.type = type;
-        this.orderId = orderId;
     }
 
     public WorkerType getType() {
@@ -36,19 +34,4 @@ public class Worker extends User {
         }
     }
 
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    @Override
-    public String toString() {
-        return "Worker{" +
-                "type=" + type +
-                ", orderId='" + orderId + '\'' +
-                '}';
-    }
 }

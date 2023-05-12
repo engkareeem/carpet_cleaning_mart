@@ -2,7 +2,7 @@ package com.carpetcleaningmart.model;
 
 public class Product {
     public enum Category {
-        CARPET(5),COVER(3), BLIND(2), CURTAIN(3), MATTRESS(4), TILE(6);
+        CARPET(5), BLIND(2), CURTAIN(3), MATTRESS(4), TILE(6);
         public final double price;
         private Category(double price) {
             this.price=price;
@@ -75,13 +75,5 @@ public class Product {
 
 
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "category=" + category +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
 
 }

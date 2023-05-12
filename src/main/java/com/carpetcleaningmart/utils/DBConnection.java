@@ -1,4 +1,4 @@
-package com.carpetcleaningmart.Utils;
+package com.carpetcleaningmart.utils;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -26,7 +26,7 @@ public class DBConnection {
 
             connection = DriverManager.getConnection("jdbc:sqlite:cleaning_carpet_mart.sqlite");
         } catch ( Exception exception ) {
-            System.err.println( exception.getClass().getName() + ": " + exception.getMessage() );
+            Printer.printError( exception.getClass().getName() + ": " + exception.getMessage() );
             System.exit(0);
         }
     }

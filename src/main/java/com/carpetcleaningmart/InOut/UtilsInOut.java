@@ -1,21 +1,22 @@
 package com.carpetcleaningmart.InOut;
 
-import com.carpetcleaningmart.Utils.Colors;
+import com.carpetcleaningmart.utils.Colors;
+import com.carpetcleaningmart.utils.Printer;
 
 public class UtilsInOut {
     public static void printHeader(String title) {
         printSeparator();
-        System.out.printf("|%38s%-38s|\n", title.substring(0, title.length() / 2), title.substring(title.length() / 2 + 1));
+        Printer.printf("|%41s%-41s|\n", title.substring(0, title.length() / 2), title.substring(title.length() / 2 + 1));
         printSeparator();
     }
 
     public static void printSeparator() {
-        System.out.println("+----------------------------------------------------------------------------+");
+        Printer.println("+----------------------------------------------------------------------------------+");
     }
 
     public static void clear() {
-        System.out.println("\n\n\n\n\n\n\n\n");
-        System.out.flush();
+        Printer.println("\n\n\n\n\n\n\n\n");
+
     }
 
 
@@ -24,7 +25,7 @@ public class UtilsInOut {
     }
 
     public static void printContentRow(String content, String color) {
-        System.out.printf("|      " + color + "%-70s" + Colors.ANSI_DEFAULT + "|\n", content);
+        Printer.printf("|      " + color + "%-76s" + Colors.ANSI_DEFAULT + "|\n", content);
 
     }
 }

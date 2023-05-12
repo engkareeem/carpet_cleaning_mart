@@ -1,4 +1,4 @@
-package com.carpetcleaningmart.Utils;
+package com.carpetcleaningmart.utils;
 
 import com.carpetcleaningmart.model.Customer;
 import com.carpetcleaningmart.model.Order;
@@ -66,7 +66,7 @@ public class DBApi {
                 return resultSet.getString("seq");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return null;
     }
@@ -76,7 +76,7 @@ public class DBApi {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("update Worker set WorkerName = '%s', WorkerPhone = '%s', WorkerAddress = '%s', WorkerType = '%s' where WorkerId = '%s'", worker.getName(), worker.getPhone(), worker.getAddress(), worker.getType(), workerId));
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
     }
 
@@ -86,7 +86,7 @@ public class DBApi {
             statement.executeUpdate(String.format("delete from Worker where WorkerId = '%s'", workerId));
             distributeWaitingOrders();
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
     }
 
@@ -102,7 +102,7 @@ public class DBApi {
                 return resultSet.getString("seq");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return null;
     }
@@ -116,7 +116,7 @@ public class DBApi {
                 return getCustomerFromRow(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return new Customer();
     }
@@ -126,7 +126,7 @@ public class DBApi {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("update Customer set CustomerName = '%s', CustomerPhone = '%s', CustomerAddress = '%s' where CustomerId = '%s'", customer.getName(), customer.getPhone(), customer.getAddress(), customerId));
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
     }
 
@@ -135,7 +135,7 @@ public class DBApi {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("update Customer set CustomerTimesServed = CustomerTimesServed + 1 where CustomerId = '%s'", customerId));
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
     }
 
@@ -144,7 +144,7 @@ public class DBApi {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("delete from Customer where CustomerId = '%s'", customerId));
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
     }
 
@@ -156,37 +156,29 @@ public class DBApi {
             String customerId = resultSet.getString("CustomerId");
             statement.executeUpdate(String.format("delete from Customer where CustomerId = '%s'", customerId));
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
     }
 
     //===    Order Section    ===\
 
-    //    public static void addOrder(Order order){
-//
-//        try {
-//            Statement statement = connection.createStatement();
-//            statement.executeUpdate(String.format("insert into  'Order' (OrderName, OrderDescription, OrderCategory, OrderPrice, CustomerId) values('%s', '%s', '%s', %f, '%s')", order.getName(), order.getDescription(), order.getCategory().toString(), order.getPrice(), order.getCustomerId()));
-//            distributeWaitingOrders();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
-    public static String addOrder(Order order) {
+
+    public static String addOrder(Order order, boolean distributeOrder) {
 
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("insert into  'Order' (OrderName, OrderDescription, OrderCategory, OrderPrice, CustomerId) values('%s', '%s', '%s', %f, '%s')", order.getName(), order.getDescription(), order.getCategory().toString(), order.getPrice(), order.getCustomerId()));
             ResultSet resultSet = statement.executeQuery("select seq from sqlite_sequence where name = 'Order'");
-            distributeWaitingOrders();
+            if(distributeOrder) distributeWaitingOrders();
             if (resultSet.next()) {
                 return resultSet.getString(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return null;
     }
+
 
     public static Order getOrder(String orderId) {
 
@@ -198,7 +190,7 @@ public class DBApi {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return new Order();
     }
@@ -210,7 +202,7 @@ public class DBApi {
             statement.executeUpdate(String.format("update 'Order' set OrderName = '%s', OrderDescription = '%s', OrderPrice = %f where OrderId = '%s'", order.getName(), order.getDescription(), order.getPrice(), orderId));
 
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
     }
 
@@ -220,7 +212,7 @@ public class DBApi {
             statement.executeUpdate(String.format("delete from 'Order' where OrderId = '%s'", orderId));
             distributeWaitingOrders();
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
     }
 
@@ -234,7 +226,7 @@ public class DBApi {
                 return resultSet.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return 0;
     }
@@ -250,7 +242,7 @@ public class DBApi {
                 return getWorkerFromRow(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return null;
     }
@@ -260,7 +252,7 @@ public class DBApi {
             Statement statement = connection.createStatement();
             statement.executeUpdate("delete from Worker where WorkerEmail = 'worker@gmail.com'");
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
     }
 
@@ -273,7 +265,7 @@ public class DBApi {
                 return getWorkerFromRow(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return null;
     }
@@ -286,7 +278,7 @@ public class DBApi {
                 return getWorkerFromRow(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return null;
     }
@@ -299,7 +291,7 @@ public class DBApi {
                 return getOrderFromRow(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return null;
     }
@@ -312,7 +304,7 @@ public class DBApi {
                 orders.add(getOrderFromRow(resultSet));
             }
         }catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return orders;
     }
@@ -327,7 +319,7 @@ public class DBApi {
                 workers.add(getWorkerFromRow(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return workers;
     }
@@ -338,7 +330,7 @@ public class DBApi {
             ResultSet resultSet = statement.executeQuery("select count(*) from Worker where WorkerType = 'EMPLOYEE'");
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return 0;
     }
@@ -353,7 +345,7 @@ public class DBApi {
                 workers.add(getWorkerFromRow(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return workers;
     }
@@ -363,12 +355,12 @@ public class DBApi {
         try {
 
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select distinct Worker.* from Worker where Worker.WorkerId not in (select distinct 'Order'.WorkerId from 'Order' where 'Order'.OrderStatus = 'IN_TREATMENT' ) and Worker.WorkerType = 'EMPLOYEE'");
+            ResultSet resultSet = statement.executeQuery("select distinct Worker.* from Worker where Worker.WorkerId not in (select 'Order'.WorkerId from 'Order' where 'Order'.OrderStatus = 'IN_TREATMENT' ) and Worker.WorkerType = 'EMPLOYEE'");
             while (resultSet.next()) {
                 freeWorkers.add(getWorkerFromRow(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return freeWorkers;
     }
@@ -378,7 +370,7 @@ public class DBApi {
             Statement statement = connection.createStatement();
             statement.executeUpdate(String.format("update 'Order' set OrderStatus = 'IN_TREATMENT', WorkerId = '%s' where OrderId = '%s'", workerId, orderId));
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
     }
 
@@ -394,7 +386,7 @@ public class DBApi {
             distributeWaitingOrders();
             Notifier.sendEmail(customer, order);
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
     }
 
@@ -407,7 +399,7 @@ public class DBApi {
             ResultSet resultSet = statement.executeQuery(String.format("select count(*) from 'Order' where OrderStatus = '%s'", orderStatus.toString().toUpperCase()));
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return 0;
     }
@@ -423,7 +415,7 @@ public class DBApi {
                 orders.add(getOrderFromRow(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return orders;
     }
@@ -438,7 +430,7 @@ public class DBApi {
                 orders.add(getOrderFromRow(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return orders;
     }
@@ -453,7 +445,7 @@ public class DBApi {
                 waitingOrders.add(getOrderFromRow(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return waitingOrders;
     }
@@ -488,7 +480,7 @@ public class DBApi {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return false;
     }
@@ -501,7 +493,7 @@ public class DBApi {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return false;
     }
@@ -514,7 +506,7 @@ public class DBApi {
             ResultSet resultSet = statement.executeQuery("select seq from sqlite_sequence where name = 'Customer'");
             return getCustomer(resultSet.getString("seq"));
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
 
 
@@ -536,7 +528,7 @@ public class DBApi {
                 Interrupt.printError("User was not found, Please check your email.");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return null;
     }
@@ -555,7 +547,7 @@ public class DBApi {
                 Interrupt.printError("User was not found, Please check your email.");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           Printer.printError(e.getMessage());
         }
         return null;
     }

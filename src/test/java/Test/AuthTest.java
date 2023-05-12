@@ -1,8 +1,8 @@
 package Test;
 
-import com.carpetcleaningmart.Utils.Auth;
+import com.carpetcleaningmart.utils.Auth;
 
-import com.carpetcleaningmart.Utils.DBApi;
+import com.carpetcleaningmart.utils.DBApi;
 import com.carpetcleaningmart.model.User;
 
 
@@ -35,10 +35,10 @@ public class AuthTest {
         user = Auth.getCurrentUser();
 
         assertNotNull(user);
-        assertEquals(user.getEmail(), "customer@gmail.com");
-        assertEquals(user.getName(), "Ahmad Moneer");
-        assertEquals(user.getAddress(), "Nablus, Rafidya");
-        assertEquals(user.getPhone(), "059-872-8291");
+        assertEquals( "customer@gmail.com", user.getEmail());
+        assertEquals( "Ahmad Moneer", user.getName());
+        assertEquals( "Nablus, Rafidya", user.getAddress());
+        assertEquals( "059-872-8291", user.getPhone());
         assertFalse(Auth.getIsWorker());
 
     }

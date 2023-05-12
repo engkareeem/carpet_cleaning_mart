@@ -1,6 +1,6 @@
 package Test;
 
-import com.carpetcleaningmart.Utils.DBApi;
+import com.carpetcleaningmart.utils.DBApi;
 
 
 import com.carpetcleaningmart.model.Worker;

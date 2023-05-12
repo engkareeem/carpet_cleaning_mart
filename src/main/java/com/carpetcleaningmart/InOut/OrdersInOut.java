@@ -1,11 +1,8 @@
 package com.carpetcleaningmart.InOut;
 
-import com.carpetcleaningmart.Functions.OrdersPage;
-import com.carpetcleaningmart.Functions.Utils;
-import com.carpetcleaningmart.Utils.Auth;
-import com.carpetcleaningmart.Utils.Colors;
-import com.carpetcleaningmart.Utils.DBApi;
-import com.carpetcleaningmart.Utils.Interrupt;
+import com.carpetcleaningmart.functions.OrdersPage;
+import com.carpetcleaningmart.functions.Utils;
+import com.carpetcleaningmart.utils.*;
 import com.carpetcleaningmart.model.Order;
 import com.carpetcleaningmart.model.Product;
 
@@ -18,30 +15,27 @@ public class OrdersInOut {
         Scanner scanner = new Scanner(System.in);
         int choice;
 
-        System.out.print(Colors.ANSI_DEFAULT);
+        Printer.print(Colors.ANSI_DEFAULT);
         UtilsInOut.printHeader("New Order");
         UtilsInOut.printContentRow("Select product category");
         UtilsInOut.printContentRow(" 1. Carpet");
-        UtilsInOut.printContentRow(" 2. Cover");
-        UtilsInOut.printContentRow(" 3. Mattress");
-        UtilsInOut.printContentRow(" 4. BLIND");
-        UtilsInOut.printContentRow(" 5. CURTAIN");
-        UtilsInOut.printContentRow(" 6. TILE");
-        UtilsInOut.printContentRow(" 7. Return");
+        UtilsInOut.printContentRow(" 2. Mattress");
+        UtilsInOut.printContentRow(" 3. BLIND");
+        UtilsInOut.printContentRow(" 4. CURTAIN");
+        UtilsInOut.printContentRow(" 5. TILE");
+        UtilsInOut.printContentRow(" 6. Return");
         UtilsInOut.printSeparator();
-        choice = Interrupt.readChoice(7);
+        choice = Interrupt.readChoice(6);
 
         if (choice == 1) {
             category = Product.Category.CARPET;
-        } else if (choice == 2) {
-            category = Product.Category.COVER;
-        } else if(choice == 3){
+        } else if(choice == 2){
             category = Product.Category.MATTRESS;
-        }else if(choice == 4){
+        }else if(choice == 3){
             category = Product.Category.BLIND;
-        }else if(choice == 5){
+        }else if(choice == 4){
             category = Product.Category.CURTAIN;
-        } else if(choice == 6){
+        } else if(choice == 5){
             category = Product.Category.TILE;
         } else {
             return;
@@ -64,11 +58,11 @@ public class OrdersInOut {
         double price = OrdersPage.calculatePrice(category, height, width);
 
         Order order = new Order(category, name, description, Order.Status.WAITING, price, Auth.getCurrentUser().getId());
-        DBApi.addOrder(order);
+        DBApi.addOrder(order, true);
         Interrupt.printSuccess("The order created successfully");
         Interrupt.waitKey();
 
-        System.out.print(Colors.ANSI_RESET);
+        Printer.print(Colors.ANSI_RESET);
 
     }
 
@@ -76,7 +70,7 @@ public class OrdersInOut {
         do {
             UtilsInOut.clear();
             ArrayList<Order> orders = DBApi.getCustomerOrder(Auth.getCurrentUser().getId()); // 76
-            System.out.print(Colors.ANSI_DEFAULT);
+            Printer.print(Colors.ANSI_DEFAULT);
             UtilsInOut.printHeader("Your Orders");
 
             int i = 1;
@@ -99,7 +93,7 @@ public class OrdersInOut {
         } while (true);
 
 
-        System.out.print(Colors.ANSI_RESET);
+        Printer.print(Colors.ANSI_RESET);
     }
 
     public static void displayOrder(Order order) {

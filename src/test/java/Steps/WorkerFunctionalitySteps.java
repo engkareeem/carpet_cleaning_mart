@@ -1,9 +1,6 @@
 package Steps;
 
-import com.carpetcleaningmart.Utils.DBApi;
-import com.carpetcleaningmart.model.Customer;
-import com.carpetcleaningmart.model.Order;
-import com.carpetcleaningmart.model.Product;
+import com.carpetcleaningmart.utils.DBApi;
 import com.carpetcleaningmart.model.Worker;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;

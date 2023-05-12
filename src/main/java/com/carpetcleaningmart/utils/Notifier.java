@@ -1,6 +1,6 @@
-package com.carpetcleaningmart.Utils;
+package com.carpetcleaningmart.utils;
 
-import com.carpetcleaningmart.Functions.OrdersPage;
+import com.carpetcleaningmart.functions.OrdersPage;
 import com.carpetcleaningmart.model.Customer;
 import com.carpetcleaningmart.model.Order;
 
@@ -12,6 +12,10 @@ import javax.mail.*;
 import javax.mail.internet.*;
 public class Notifier {
     private static Session session;
+
+    private  Notifier(){
+        session = null;
+    }
     public static void sendEmail(Customer customer, Order finishedOrder){
 
         final String senderEmail = "carpet.cleaner.mart@gmail.com";
@@ -23,10 +27,10 @@ public class Notifier {
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
 
-//        System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
         if(session == null)
             session = Session.getInstance(props,
                     new javax.mail.Authenticator() {
+                        @Override
                         protected PasswordAuthentication getPasswordAuthentication() {
                             return new PasswordAuthentication(senderEmail, token);
                         }
@@ -88,8 +92,9 @@ public class Notifier {
             Transport.send(message);
 
 
-        } catch (MessagingException e) {
-            e.printStackTrace();
+        } catch (MessagingException exception) {
+            Printer.printError(exception.getMessage());
+
         }
     }
 }

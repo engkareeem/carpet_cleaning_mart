@@ -1,9 +1,10 @@
 package com.carpetcleaningmart.InOut;
 
-import com.carpetcleaningmart.Utils.DBApi;
-import com.carpetcleaningmart.Utils.Interrupt;
+import com.carpetcleaningmart.utils.DBApi;
+import com.carpetcleaningmart.utils.Interrupt;
 import com.carpetcleaningmart.model.Order;
 import com.carpetcleaningmart.model.Worker;
+import com.carpetcleaningmart.utils.Printer;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,7 @@ public class WorkerInOut {
     public static void hireWorker() {
         Worker worker = AuthInOut.hireWorker();
         Interrupt.printSuccess(worker.getName() + " Has been hired successfully.");
-        System.out.println();
+        Printer.println();
         Interrupt.readChoice(0, "Enter any number to return: ");
     }
 

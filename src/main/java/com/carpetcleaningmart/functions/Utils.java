@@ -1,4 +1,4 @@
-package com.carpetcleaningmart.Functions;
+package com.carpetcleaningmart.functions;
 
 public class Utils {
     public static String textToName(String text) {

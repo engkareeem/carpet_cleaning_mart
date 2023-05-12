@@ -1,4 +1,4 @@
-package com.carpetcleaningmart.Utils;
+package com.carpetcleaningmart.utils;
 import com.carpetcleaningmart.model.Customer;
 import com.carpetcleaningmart.model.User;
 import com.carpetcleaningmart.model.Worker;

@@ -1,6 +1,6 @@
 package Test;
 
-import com.carpetcleaningmart.Functions.OrdersPage;
+import com.carpetcleaningmart.functions.OrdersPage;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -16,16 +16,16 @@ public class DiscountFunctionalityTest {
         price = 2000;
         timeServed = 0;
         discount = OrdersPage.getDiscount(price, timeServed);
-        assertEquals(discount,0.0,0);
+        assertEquals(0.0, discount,0);
 
         price = 500;
         timeServed = 4;
         discount = OrdersPage.getDiscount(price,timeServed);
-        assertEquals(discount,0.02,0);
+        assertEquals(0.02, discount,0);
 
         price = 300;
         timeServed=11;
         discount = OrdersPage.getDiscount(price,timeServed);
-        assertEquals(discount,0.05,0);
+        assertEquals(0.05, discount,0);
     }
 }

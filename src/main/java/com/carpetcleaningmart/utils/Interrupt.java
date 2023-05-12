@@ -1,11 +1,15 @@
-package com.carpetcleaningmart.Utils;
+package com.carpetcleaningmart.utils;
 
-import com.carpetcleaningmart.Functions.Utils;
+import com.carpetcleaningmart.functions.Utils;
 
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Interrupt {
+
+    private Interrupt(){
+
+    }
     //=== Menu reader section ===\\
     public static int readChoice(int limit) {
         return readChoice(limit, "Enter your choice: ");
@@ -14,18 +18,18 @@ public class Interrupt {
     public static int readChoice(int limit, String message) {
         int choice;
         Scanner scanner = new Scanner(System.in);
-        System.out.print(message);
+        Printer.print(message);
         String input = scanner.next();
         while (Utils.isNotNum(input)) {
-            System.out.println(Colors.ANSI_RED + "Your choice is invalid." + Colors.ANSI_DEFAULT);
-            System.out.print(message);
+            Printer.println(Colors.ANSI_RED + "Your choice is invalid." + Colors.ANSI_DEFAULT);
+            Printer.print(message);
             input = scanner.next();
         }
         choice = Integer.parseInt(input);
         if (limit < 1) return -1;
         while (choice < 1 || choice > limit) {
-            System.out.println(Colors.ANSI_RED + "Your choice is invalid." + Colors.ANSI_DEFAULT);
-            System.out.print(message);
+            Printer.println(Colors.ANSI_RED + "Your choice is invalid." + Colors.ANSI_DEFAULT);
+            Printer.print(message);
             choice = scanner.nextInt();
         }
         return choice;
@@ -83,11 +87,6 @@ public class Interrupt {
         String message = "Enter phone number: ";
         System.out.print(message);
         String phone = scanner.next();
-        do {
-            printError("The phone number is invalid.");
-            System.out.print(message);
-            phone = scanner.next();
-        } while (Utils.isNotNum(phone));
         return phone;
     }
 

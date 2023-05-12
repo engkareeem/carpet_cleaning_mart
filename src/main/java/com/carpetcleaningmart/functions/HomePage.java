@@ -1,8 +1,9 @@
-package com.carpetcleaningmart.Functions;
+package com.carpetcleaningmart.functions;
 
 import com.carpetcleaningmart.InOut.*;
-import com.carpetcleaningmart.Utils.Auth;
-import com.carpetcleaningmart.Utils.Interrupt;
+import com.carpetcleaningmart.utils.Auth;
+import com.carpetcleaningmart.utils.Interrupt;
+import com.carpetcleaningmart.utils.Printer;
 
 public class HomePage {
 
@@ -18,7 +19,7 @@ public class HomePage {
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    Printer.printError(e.getMessage());
                 }
             }
             if (Auth.isLoggedIn()) {

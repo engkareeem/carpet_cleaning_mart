@@ -1,6 +1,6 @@
 package Test;
 
-import com.carpetcleaningmart.Utils.DBApi;
+import com.carpetcleaningmart.utils.DBApi;
 import com.carpetcleaningmart.model.Order;
 import com.carpetcleaningmart.model.Product;
 import org.junit.After;
@@ -18,7 +18,7 @@ public class OrdersFunctionalityTest {
     @Before
     public void setup() {
         order = new Order(Product.Category.CARPET,"Kareem`s Carpet","9*9 Pink Carpet",null,405.0,null);
-        orderId = DBApi.addOrder(order);
+        orderId = DBApi.addOrder(order, true);
     }
     @After
     public void end() {

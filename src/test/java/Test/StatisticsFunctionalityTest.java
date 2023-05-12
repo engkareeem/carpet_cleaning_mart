@@ -1,11 +1,10 @@
 package Test;
 
-import com.carpetcleaningmart.Utils.DBApi;
+import com.carpetcleaningmart.utils.DBApi;
 import com.carpetcleaningmart.model.Order;
 import com.carpetcleaningmart.model.Product;
 import com.carpetcleaningmart.model.Worker;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -21,7 +20,7 @@ public class StatisticsFunctionalityTest {
     @Before
     public void setup() {
         order = new Order(Product.Category.CARPET,"Kareem`s Carpet","9*9 Pink Carpet",null,405.0,"1");
-        worker = new Worker(null,"Ahmad Rami","059-555-5678","Nablus, Ragidya","worker@gmail.com", Worker.WorkerType.EMPLOYEE,null);
+        worker = new Worker(null,"Ahmad Rami","059-555-5678","Nablus, Ragidya","worker@gmail.com", Worker.WorkerType.EMPLOYEE);
     }
 
     @Test
@@ -38,7 +37,7 @@ public class StatisticsFunctionalityTest {
         int inTreatmentOld = DBApi.getOrderStatusCount(Order.Status.IN_TREATMENT);
         int completeOld = DBApi.getOrderStatusCount(Order.Status.COMPLETE);
 
-        String orderId = DBApi.addOrder(order);
+        String orderId = DBApi.addOrder(order, true);
         String workerId = DBApi.addWorker(worker,"123123");
 
         int waitingNew = DBApi.getOrderStatusCount(Order.Status.WAITING);

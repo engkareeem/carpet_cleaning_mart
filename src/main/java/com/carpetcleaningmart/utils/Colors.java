@@ -1,4 +1,4 @@
-package com.carpetcleaningmart.Utils;
+package com.carpetcleaningmart.utils;
 
 public class Colors {
 

@@ -1,16 +1,9 @@
 package Steps;
 
-import com.carpetcleaningmart.Utils.DBApi;
-import com.carpetcleaningmart.model.Customer;
-import com.carpetcleaningmart.model.Order;
-import com.carpetcleaningmart.model.Product;
-import com.carpetcleaningmart.model.Worker;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;

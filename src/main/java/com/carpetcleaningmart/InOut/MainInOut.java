@@ -1,16 +1,17 @@
 package com.carpetcleaningmart.InOut;
 
-import com.carpetcleaningmart.Utils.Auth;
-import com.carpetcleaningmart.Utils.Colors;
-import com.carpetcleaningmart.Utils.Interrupt;
+import com.carpetcleaningmart.utils.Auth;
+import com.carpetcleaningmart.utils.Colors;
+import com.carpetcleaningmart.utils.Interrupt;
 import com.carpetcleaningmart.model.Worker;
+import com.carpetcleaningmart.utils.Printer;
 
 public class MainInOut {
     public static void mainMenu() {
 
         UtilsInOut.clear();
         int choice;
-        System.out.print(Colors.ANSI_DEFAULT);
+        Printer.print(Colors.ANSI_DEFAULT);
         if (!Auth.getIsWorker()) {
             UtilsInOut.printHeader("Main Menu");
             UtilsInOut.printContentRow("1. Make new order");
@@ -59,6 +60,6 @@ public class MainInOut {
                 Auth.logout();
             }
         }
-        System.out.print(Colors.ANSI_RESET);
+        Printer.print(Colors.ANSI_RESET);
     }
 }

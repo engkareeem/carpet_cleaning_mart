@@ -1,6 +1,6 @@
 package Steps;
 
-import com.carpetcleaningmart.Utils.DBApi;
+import com.carpetcleaningmart.utils.DBApi;
 import com.carpetcleaningmart.model.Customer;
 import com.carpetcleaningmart.model.Order;
 import com.carpetcleaningmart.model.Product;
@@ -42,7 +42,7 @@ public class DistributeOrderOnWorkersSteps {
         order.setPrice(100.0);
         order.setCategory(Product.Category.CARPET);
         order.setDescription("A Test Order");
-        order.setId(DBApi.addOrder(order));
+        order.setId(DBApi.addOrder(order, true));
 
     }
 

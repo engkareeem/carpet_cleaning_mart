@@ -1,18 +1,11 @@
 package Test;
 
-import com.carpetcleaningmart.Utils.Auth;
-
-import com.carpetcleaningmart.Utils.DBApi;
+import com.carpetcleaningmart.utils.DBApi;
 import com.carpetcleaningmart.model.Customer;
 import com.carpetcleaningmart.model.Order;
 import com.carpetcleaningmart.model.Product;
-import com.carpetcleaningmart.model.User;
 
 
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
 
@@ -44,7 +37,7 @@ public class DistributeOrderTest {
         order.setCategory(Product.Category.CARPET);
         order.setDescription("A Test Order");
 
-        order.setId(DBApi.addOrder(order));
+        order.setId(DBApi.addOrder(order, false));
 
     }
 
@@ -63,10 +56,16 @@ public class DistributeOrderTest {
 
         int numberOfFreeWorkers = DBApi.getFreeWorkers().size();
 
-        if (numberOfFreeWorkers > 0) {
-            // Then the order status should be "IN_TREATMENT"
-            assertEquals(Order.Status.IN_TREATMENT, testOrder.getStatus());
+        if (numberOfFreeWorkers != 0){
+            DBApi.distributeWaitingOrders();
+
+
+                // Then the order status should be "IN_TREATMENT"
+            assertEquals(numberOfFreeWorkers - 1, DBApi.getFreeWorkers().size());
+
         }
+
+
     }
 
     @Test
@@ -76,6 +75,7 @@ public class DistributeOrderTest {
         int numberOfFreeWorkers = DBApi.getFreeWorkers().size();
 
         if (numberOfFreeWorkers == 0) {
+            DBApi.distributeWaitingOrders();
             // Then the order status should be "IN_TREATMENT"
             assertEquals(Order.Status.WAITING, testOrder.getStatus());
         }

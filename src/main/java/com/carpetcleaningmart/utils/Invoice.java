@@ -1,4 +1,4 @@
-package com.carpetcleaningmart.Utils;
+package com.carpetcleaningmart.utils;
 
 import java.io.FileOutputStream;
 import java.time.LocalDate;
@@ -20,6 +20,10 @@ import com.itextpdf.kernel.geom.Rectangle;
 
 public class Invoice {
 
+    private Invoice(){
+
+    }
+
     public static void generateInvoice(Order order, Customer customer, double discount, double totalPrice) {
         try {
             // Create a new PDF document
@@ -40,10 +44,10 @@ public class Invoice {
             LocalDate date = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             Paragraph details = new Paragraph()
-                    .add("Date: " + date.format(formatter) + "\n")
-                    .add(String.format("Invoice Number: %s\n", order.getId()))
-                    .add(String.format("Customer Name: %s\n", customer.getName()))
-                    .add(String.format("Customer Email: %s\n\n", customer.getEmail()))
+                    .add("Date: " + date.format(formatter) + "%n")
+                    .add(String.format("Invoice Number: %s%n", order.getId()))
+                    .add(String.format("Customer Name: %s%n", customer.getName()))
+                    .add(String.format("Customer Email: %s%n%n", customer.getEmail()))
                     .setFont(normal);
             document.add(details);
 
@@ -90,8 +94,8 @@ public class Invoice {
             document.add(footer);
 
             document.close();
-        }catch (Exception e) {
-            e.printStackTrace();
+        }catch (Exception exception) {
+            Printer.printError(exception.getMessage());
         }
     }
 }

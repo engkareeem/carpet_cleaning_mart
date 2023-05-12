@@ -1,4 +1,4 @@
-package com.carpetcleaningmart.Functions;
+package com.carpetcleaningmart.functions;
 import com.carpetcleaningmart.model.Product;
 
 public class OrdersPage {

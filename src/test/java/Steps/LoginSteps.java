@@ -1,7 +1,7 @@
 package Steps;
 
-import com.carpetcleaningmart.Utils.Auth;
-import com.carpetcleaningmart.Utils.DBApi;
+import com.carpetcleaningmart.utils.Auth;
+import com.carpetcleaningmart.utils.DBApi;
 import com.carpetcleaningmart.model.User;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
