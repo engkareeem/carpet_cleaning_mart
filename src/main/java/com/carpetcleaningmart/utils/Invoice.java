@@ -21,7 +21,7 @@ import com.itextpdf.kernel.geom.Rectangle;
 public class Invoice {
 
     private Invoice(){
-
+        // Do nothing
     }
 
     public static void generateInvoice(Order order, Customer customer, double discount, double totalPrice) {

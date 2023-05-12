@@ -14,7 +14,7 @@ public class Notifier {
     private static Session session;
 
     private  Notifier(){
-        session = null;
+        // Do nothing
     }
     public static void sendEmail(Customer customer, Order finishedOrder){
 

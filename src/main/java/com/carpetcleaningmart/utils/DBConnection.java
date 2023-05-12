@@ -8,6 +8,10 @@ public class DBConnection {
 
     private static Connection connection = null;
 
+    private DBConnection(){
+        // Do nothing
+    }
+
     public static void main( String[] args) {
         connectToDB();
     }

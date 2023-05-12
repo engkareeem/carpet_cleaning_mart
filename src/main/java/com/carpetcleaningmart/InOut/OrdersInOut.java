@@ -56,7 +56,7 @@ public class OrdersInOut {
         UtilsInOut.printSeparator();
         UtilsInOut.printContentRow("Please describe the product.");
         UtilsInOut.printSeparator();
-        System.out.print("Enter the description: ");
+        Printer.print("Enter the description: ");
         scanner.reset();
         String description = scanner.nextLine();
         description = String.format("%.1f*%.1f %s, %s", height, width, Utils.textToName(category.toString()), description);

@@ -7,6 +7,9 @@ import com.carpetcleaningmart.utils.Printer;
 
 public class HomePage {
 
+    private HomePage(){
+        // Do nothing
+    }
     public static void homePage() {
         do {
             if (!Auth.isLoggedIn()) {
@@ -16,11 +19,6 @@ public class HomePage {
                     System.exit(0);
                 }
                 Interrupt.printSuccess("Welcome " + Auth.getCurrentUser().getName());
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    Printer.printError(e.getMessage());
-                }
             }
             if (Auth.isLoggedIn()) {
                 MainInOut.mainMenu();

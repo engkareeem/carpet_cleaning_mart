@@ -9,6 +9,10 @@ public class Auth {
 
     private static Worker.WorkerType role;
 
+    private Auth(){
+        // Do nothing
+    }
+
     public static void signUp(String email, String name, String address, String phone, String password){
         Customer customer = new Customer();
         customer.setName(name);

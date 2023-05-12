@@ -8,11 +8,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DBApi {
     public static Connection connection = DBConnection.getConnection();
     private static final String customerIdStr = "CustomerId";
 
+    private DBApi(){
+        // Do nothing
+    }
     //===    Helper Functions Section    ===\
     private static Worker getWorkerFromRow(ResultSet resultSet) throws SQLException {
         Worker worker = new Worker();
@@ -295,7 +299,7 @@ public class DBApi {
         }
         return null;
     }
-    public static ArrayList<Order> getWorkerPreviousOrders(String workerId) {
+    public static List<Order> getWorkerPreviousOrders(String workerId) {
         ArrayList<Order> orders = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
@@ -309,7 +313,7 @@ public class DBApi {
         return orders;
     }
 
-    public static ArrayList<Worker> getAllWorkers() {
+    public static List<Worker> getAllWorkers() {
         ArrayList<Worker> workers = new ArrayList<>();
         try {
 
@@ -335,12 +339,12 @@ public class DBApi {
         return 0;
     }
 
-    public static ArrayList<Worker> searchForWorkers(String workerName) {
+    public static List<Worker> searchForWorkers(String workerName) {
         ArrayList<Worker> workers = new ArrayList<>();
         try {
 
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from Worker where WorkerType = 'EMPLOYEE'");
+            ResultSet resultSet = statement.executeQuery("select * from Worker where WorkerType = 'EMPLOYEE' and WorkerName like '%" + workerName + "%'");
             while (resultSet.next()) {
                 workers.add(getWorkerFromRow(resultSet));
             }
@@ -350,7 +354,7 @@ public class DBApi {
         return workers;
     }
 
-    public static ArrayList<Worker> getFreeWorkers() {
+    public static List<Worker> getFreeWorkers() {
         ArrayList<Worker> freeWorkers = new ArrayList<>();
         try {
 
@@ -405,7 +409,7 @@ public class DBApi {
     }
 
 
-    public static ArrayList<Order> getAllOrders() {
+    public static List<Order> getAllOrders() {
         ArrayList<Order> orders = new ArrayList<>();
         try {
 
@@ -420,7 +424,7 @@ public class DBApi {
         return orders;
     }
 
-    public static ArrayList<Order> getCustomerOrder(String customerId) {
+    public static List<Order> getCustomerOrder(String customerId) {
         ArrayList<Order> orders = new ArrayList<>();
         try {
 
@@ -435,7 +439,7 @@ public class DBApi {
         return orders;
     }
 
-    public static ArrayList<Order> getWaitingOrders() {
+    public static List<Order> getWaitingOrders() {
         ArrayList<Order> waitingOrders = new ArrayList<>();
         try {
 
@@ -453,8 +457,8 @@ public class DBApi {
 
     // distribute waiting orders on free workers
     public static void distributeWaitingOrders() {
-        ArrayList<Order> waitingOrders = getWaitingOrders();
-        ArrayList<Worker> freeWorkers = getFreeWorkers();
+        ArrayList<Order> waitingOrders = (ArrayList<Order>) getWaitingOrders();
+        ArrayList<Worker> freeWorkers = (ArrayList<Worker>) getFreeWorkers();
         if (freeWorkers.isEmpty()) return;
         int index = 0;
 
