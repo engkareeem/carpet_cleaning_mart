@@ -1,6 +1,10 @@
 package com.carpetcleaningmart.functions;
 
 public class Utils {
+
+    private Utils(){
+        // Do nothing
+    }
     public static String textToName(String text) {
         if(text.length() <= 1) return text;
         String[] slices = text.split(" ");

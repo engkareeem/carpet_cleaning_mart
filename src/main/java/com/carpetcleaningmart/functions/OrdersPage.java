@@ -2,6 +2,10 @@ package com.carpetcleaningmart.functions;
 import com.carpetcleaningmart.model.Product;
 
 public class OrdersPage {
+
+    private OrdersPage(){
+        // Do nothing
+    }
     public static double calculatePrice(Product.Category category, double height, double width) {
         double size = height * width;
         return size * category.price;

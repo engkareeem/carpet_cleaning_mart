@@ -9,6 +9,10 @@ import com.carpetcleaningmart.utils.Printer;
 import java.util.ArrayList;
 
 public class WorkerInOut {
+
+    private WorkerInOut(){
+        // Do nothing
+    }
     public static void displayStatistics() {
         int workersNum = DBApi.getWorkersCount();
         int customersNum = DBApi.getCustomersServedCount();

@@ -11,7 +11,11 @@ import java.util.Scanner;
 
 public class OrdersInOut {
 
-    private static String returnStr = "Return";
+    private static final String returnStr = "Return";
+
+    private OrdersInOut(){
+        // Do nothing
+    }
 
     public static void createNewOrder() {
         Product.Category category;
@@ -56,7 +60,7 @@ public class OrdersInOut {
         scanner.reset();
         String description = scanner.nextLine();
         description = String.format("%.1f*%.1f %s, %s", height, width, Utils.textToName(category.toString()), description);
-        String name = Utils.getFirstName(Auth.getCurrentUser().getName()) + "`s " + Utils.textToName(category.toString()); // TODO: User name + category
+        String name = Utils.getFirstName(Auth.getCurrentUser().getName()) + "`s " + Utils.textToName(category.toString());
 
         double price = OrdersPage.calculatePrice(category, height, width);
 
@@ -72,7 +76,7 @@ public class OrdersInOut {
     public static void displayOrders() {
         do {
             UtilsInOut.clear();
-            ArrayList<Order> orders = DBApi.getCustomerOrder(Auth.getCurrentUser().getId()); // 76
+            ArrayList<Order> orders = DBApi.getCustomerOrder(Auth.getCurrentUser().getId());
             Printer.print(Colors.ANSI_DEFAULT);
             UtilsInOut.printHeader("Your Orders");
 

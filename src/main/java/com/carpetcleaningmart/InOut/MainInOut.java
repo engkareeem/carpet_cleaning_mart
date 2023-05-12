@@ -7,6 +7,10 @@ import com.carpetcleaningmart.model.Worker;
 import com.carpetcleaningmart.utils.Printer;
 
 public class MainInOut {
+
+    private MainInOut(){
+        // Do nothing
+    }
     public static void mainMenu() {
         String title = "Main Menu";
 

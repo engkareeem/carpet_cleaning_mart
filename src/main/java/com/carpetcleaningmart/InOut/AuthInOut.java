@@ -4,6 +4,10 @@ import com.carpetcleaningmart.utils.*;
 import com.carpetcleaningmart.model.Worker;
 
 public class AuthInOut {
+
+    private AuthInOut(){
+        // Do nothing
+    }
     public static void authorizeUser() {
         UtilsInOut.clear();
         Printer.println(Colors.ANSI_DEFAULT);
