@@ -1,4 +1,4 @@
-package com.carpetcleaningmart.InOut;
+package com.carpetcleaningmart.inout;
 
 import com.carpetcleaningmart.utils.Auth;
 import com.carpetcleaningmart.utils.Colors;

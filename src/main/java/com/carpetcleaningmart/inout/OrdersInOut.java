@@ -1,4 +1,4 @@
-package com.carpetcleaningmart.InOut;
+package com.carpetcleaningmart.inout;
 
 import com.carpetcleaningmart.functions.OrdersPage;
 import com.carpetcleaningmart.functions.Utils;

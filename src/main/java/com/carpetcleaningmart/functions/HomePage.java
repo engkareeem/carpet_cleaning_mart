@@ -1,9 +1,8 @@
 package com.carpetcleaningmart.functions;
 
-import com.carpetcleaningmart.InOut.*;
+import com.carpetcleaningmart.inout.*;
 import com.carpetcleaningmart.utils.Auth;
 import com.carpetcleaningmart.utils.Interrupt;
-import com.carpetcleaningmart.utils.Printer;
 
 public class HomePage {
 

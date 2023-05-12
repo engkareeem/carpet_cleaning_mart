@@ -86,8 +86,7 @@ public class Interrupt {
         Scanner scanner = new Scanner(System.in);
         String message = "Enter phone number: ";
         Printer.print(message);
-        String phone = scanner.next();
-        return phone;
+        return scanner.next();
     }
 
     //=== System interrupt section ===\\

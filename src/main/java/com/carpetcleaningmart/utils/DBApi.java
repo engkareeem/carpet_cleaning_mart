@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DBApi {
-    public static Connection connection = DBConnection.getConnection();
+    public static final Connection connection = DBConnection.getConnection();
     private static final String CUSTOMER_ID = "CustomerId";
 
     private DBApi(){
@@ -479,7 +479,7 @@ public class DBApi {
 
     //===    Auth Utility Section    ===\
 
-    public static Boolean isWorker(String email) {
+    public static boolean isWorker(String email) {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(String.format("select * from Worker where WorkerEmail = '%s'", email));

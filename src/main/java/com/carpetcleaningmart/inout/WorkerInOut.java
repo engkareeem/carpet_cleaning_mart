@@ -1,4 +1,4 @@
-package com.carpetcleaningmart.InOut;
+package com.carpetcleaningmart.inout;
 
 import com.carpetcleaningmart.utils.DBApi;
 import com.carpetcleaningmart.utils.Interrupt;
