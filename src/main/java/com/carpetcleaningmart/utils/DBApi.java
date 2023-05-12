@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class DBApi {
     public static Connection connection = DBConnection.getConnection();
@@ -457,11 +456,12 @@ public class DBApi {
         ArrayList<Worker> freeWorkers = getFreeWorkers();
         if (freeWorkers.isEmpty()) return;
         int index = 0;
-        Random dice = new Random();
+
         for (Order order : waitingOrders) {
-            index = dice.nextInt(freeWorkers.size());
+            if(index >= freeWorkers.size()) break;
             assignWorkerToAnOrder(freeWorkers.get(index).getId(), order.getId());
             freeWorkers.remove(index);
+            index++;
         }
     }
 
