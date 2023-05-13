@@ -57,7 +57,7 @@ public class Notifier {
 
 
             MimeBodyPart textBodyPart = new MimeBodyPart();
-            textBodyPart.setText(String.format("Dear %s,\n We are pleased to inform you that your %s  is now ready and available to be taken!\n You'll be pleased to know that your %s is priced at %.2f$,\n %s \nwhich we believe is a great value for the quality we offer. \nThank you for choosing us. We hope to serve you again soon. \nBest regards, \nCarpet Cleaning Mart.\n", customer.getName(), finishedOrder.getCategory().toString().toLowerCase(), finishedOrder.getDescription(), finishedOrder.getPrice(), discount > 0 ? discountMsg : "")); // Set the message body text
+            textBodyPart.setText(String.format("Dear %s,%n We are pleased to inform you that your %s  is now ready and available to be taken!%n You'll be pleased to know that your %s is priced at %.2f$,%n %s \nwhich we believe is a great value for the quality we offer. %nThank you for choosing us. We hope to serve you again soon. %nBest regards, %nCarpet Cleaning Mart.%n", customer.getName(), finishedOrder.getCategory().toString().toLowerCase(), finishedOrder.getDescription(), finishedOrder.getPrice(), discount > 0 ? discountMsg : "")); // Set the message body text
 
 
             multipart.addBodyPart(textBodyPart);
