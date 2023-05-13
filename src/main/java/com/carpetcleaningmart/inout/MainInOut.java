@@ -63,7 +63,6 @@ public class MainInOut {
             Auth.logout();
         }
     }
-
     private static void handleAdminMenu(String title) {
         UtilsInOut.printHeader(title);
         UtilsInOut.printContentRow("1. Hire Worker");
